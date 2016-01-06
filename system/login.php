@@ -6,12 +6,22 @@ session_start();
 $_SESSION['lang'] = 'en';
 include("../kint/Kint.class.php");
 
-include_once("../application/config.php");
+require_once("../appConfig/appConfig.php");
 include_once("../application/database/db.php");
+include_once("../application/config.php");
 include_once("../application/functions.php");
 include_once("../DDICT/masterFunctions.php");
 
 
+
+if (isset($_SESSION['lang']))
+{
+  include_once($GLOBALS['LANGUAGE_APP_DIR'] . $_SESSION['lang'] . ".php");
+}
+else
+{
+  include_once($GLOBALS['LANGUAGE_APP_DIR'] . "en.php");
+}
 
 if (isset($_SESSION['lang']))
 {
@@ -44,6 +54,7 @@ $alias = 'login';
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>common-responsive.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>style.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>responsive.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>appConfig/custom-css.css" type="text/css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="<?php echo BASE_JS_URL ?>bootstrap.min.js"></script>
     <style>
@@ -75,18 +86,16 @@ $alias = 'login';
           <div class="col-lg-12">
             <!--Login block starts here-->
             <div class="login-div sign-in">
-             <form class="form-signin" role="form" action="<?php echo BASE_URL_SYSTEM ?>form-actions.php" method="post" onSubmit="return loginFormvalidate()">
+              <form class="form-signin" role="form" action="profile.php?action=login" method="post" onSubmit="return loginFormvalidate()">
                 <h2 class="form-signin-heading"><?php echo LOGIN_LOGO ?></h2>
                 <p><?php echo REGISTRATION_MESSAGE1 ?><a href="register.php"><?php echo REGISTRATION_MESSAGE2 ?></a></p>
-                <input type="text" class="form-control" placeholder="<?php echo LOGIN_EMAIL_PLACEHOLDER ?>"  autofocus name="log_email" id="log_email" value="<?php echo $_COOKIE['email']; ?>">
-                <input type="password" class="form-control" placeholder="<?php echo PASSWORD ?>" name="log_pwd" id="log_pwd" value="<?php echo $_COOKIE['password']; ?>">
-                <!--	<label>Login As : </label>
-                  <select class="form-control">
-                  <option>Visitor</option>
-                  <option>Project Buyer</option>
-                  <option>Project Seller</option>
-                  <option>Subscriber</option>
-                  </select>-->
+               
+
+ <?= Select_Data_FieldDictionary_Record($alias);?>
+
+
+
+
                 <label class="checkbox">
                   <input type="checkbox" value="1" name="remember_me" <?php
                   if (isset($_COOKIE['remember_me']))
@@ -100,7 +109,7 @@ $alias = 'login';
                   ?>>
                   &nbsp; &nbsp; &nbsp; <?php echo LOGIN_REMEMBERME ?> <span style="font-size:14px; text-align:right;color:#3366FF;cursor:pointer; float:right;" ><a id="forget-pass" href="#"><?php echo FORGOT_PASSWORD ?></a></span></label>
 
-                <button class="btn btn-lg btn-primary btn-block" type="submit" name="log_submit" value="log_submit"><?php echo SIGN_IN ?></button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="" value=""><?php echo SIGN_IN ?></button>
               </form>
               <p class="cpy-ryt"> <?php echo COPY_RIGHTS ?></p>
             </div>

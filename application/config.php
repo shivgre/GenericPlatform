@@ -1,28 +1,34 @@
 <?php
 
-if ($_SERVER['HTTP_HOST'] === 'localhost')
-{
-    
- //define('APP_DIR', $_SERVER['DOCUMENT_ROOT'].'generic-platforms/'); // Base Root or Directory Path For Application
+if ($_SERVER['HTTP_HOST'] === 'localhost') {
 
- $GLOBALS['APP_DIR'] = $_SERVER['DOCUMENT_ROOT'] . 'generic-platforms/'; 
-  
-  define('BASE_URL', 'http://localhost/generic-platforms/');
-  ini_set('display_error', 1);
-  error_reporting(1);
-}
-else
-{
- //(!empty($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'])) ? $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] : $_SERVER['DOCUMENT_ROOT']
-  define('APP_DIR', (!empty($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'])) ? $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] : $_SERVER['DOCUMENT_ROOT']); // Base Root or Directory Path For Application
-  $GLOBALS['APP_DIR'] = (!empty($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'])) ? $_SERVER['SUBDOMAIN_DOCUMENT_ROOT']  . '/' : $_SERVER['DOCUMENT_ROOT'] . '/'; // Base Root or Directory Path For Application
-  
-  /*
-   * Here you need to change the domain or sub domain only
-   */
-  define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/');
-  ini_set('display_error', 1);
-  error_reporting(1);
+    //define('APP_DIR', $_SERVER['DOCUMENT_ROOT'].'generic-platforms/'); // Base Root or Directory Path For Application
+
+    $GLOBALS['APP_DIR'] = $_SERVER['DOCUMENT_ROOT'] . 'generic-platforms/';
+
+    define('BASE_URL', 'http://localhost/generic-platforms/');
+    ini_set('display_error', 1);
+   error_reporting(1);
+} else {
+    
+    //$const_pathname = get("custom_setup", "constant_name='pathname'");
+
+    /*if (!empty($const_pathname['value'])) {
+
+        define('APP_DIR', (!empty($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'])) ? $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] : $_SERVER['DOCUMENT_ROOT'] . trim($const_pathname['value'])); // Base Root or Directory Path For Application
+
+        $GLOBALS['APP_DIR'] = (!empty($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'])) ? $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] . '/' : $_SERVER['DOCUMENT_ROOT'] . '/' . trim($const_pathname['value']) . '/'; // Base Root or Directory Path For Application
+
+        define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/' . trim($const_pathname['value']) . '/' );
+    } else {*/
+        define('APP_DIR', (!empty($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'])) ? $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] : $_SERVER['DOCUMENT_ROOT']); // Base Root or Directory Path For Application
+        $GLOBALS['APP_DIR'] = (!empty($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'])) ? $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] . '/' : $_SERVER['DOCUMENT_ROOT'] . '/'; // Base Root or Directory Path For Application
+
+        define('BASE_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/');
+    //}
+
+    ini_set('display_error', 1);
+    error_reporting(1);
 }
 
 //echo APP_DIR . "<br>" . $GLOBALS['APP_DIR'] . "<br>" . BASE_URL;exit();
@@ -31,7 +37,7 @@ define('BASE_URL_SYSTEM', BASE_URL . 'system/');
 define('BASE_URL_ADMIN', BASE_URL . 'admin/');
 define('BASE_CSS_URL', BASE_URL . 'application/css/');
 define('BASE_JS_URL', BASE_URL . 'application/js/');
-define('BASE_IMAGES_URL', BASE_URL . 'application/images/');
+define('BASE_IMAGES_URL', BASE_URL . 'appConfig/images/');
 define('CHILD_FILES_URL', BASE_URL . 'childPages/');
 
 $GLOBALS['session_set'] = 0;
@@ -39,7 +45,7 @@ $GLOBALS['session_set'] = 0;
 $GLOBALS['CONFIG_APP_DIR'] = $GLOBALS['APP_DIR'] . 'application/config.php';
 $GLOBALS['INCLUDE_APP_DIR'] = $GLOBALS['APP_DIR'] . 'application/includes/';
 $GLOBALS['DATABASE_APP_DIR'] = $GLOBALS['APP_DIR'] . 'application/database/';
-$GLOBALS['LANGUAGE_APP_DIR'] = $GLOBALS['APP_DIR'] . 'application/language/';
+$GLOBALS['LANGUAGE_APP_DIR'] = $GLOBALS['APP_DIR'] . 'appConfig/language/';
 $GLOBALS['CHILD_FILES_DIR'] = $GLOBALS['APP_DIR'] . 'application/childPages/';
 
 define('MYPATH_USERS_DIR', APP_DIR . '/users_uploads/');
@@ -85,11 +91,6 @@ define('PROJECT_DRAFT_MODE_ENABLED', false);
 define('PROJECT_LAUNCH_APPROVAL_NEEDED', false);
 /* * ************Project Type/Privacy Configurations @ends******************* */
 
-
-
-//////// YASIR added constants here 7/30/2015
-
-define('EDIT', 'Edit');
 
 $MYPATH = APP_DIR;
 return $MYPATH;

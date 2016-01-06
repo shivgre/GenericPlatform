@@ -5,8 +5,7 @@
         <group>
             <file>file:/D:/wamp/www/generic-platforms/system/profile.php</file>
             <file>file:/D:/wamp/www/generic-platforms/DDICT/masterFunctions.php</file>
-            <file>file:/D:/wamp/www/generic-platforms/application/database/db.php</file>
-            <file>file:/D:/wamp/www/generic-platforms/system/ajax-actions.php</file>
+            <file>file:/D:/wamp/www/generic-platforms/test.php</file>
         </group>
     </open-files>
 </project-private>

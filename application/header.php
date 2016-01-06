@@ -1,25 +1,15 @@
 <?php
-
-session_start();
+@session_start();
 $_SESSION['lang'] = 'en';
 
 require_once 'config.php';
-include_once($GLOBALS['DATABASE_APP_DIR'] . "db.php");
 include_once($GLOBALS['LANGUAGE_APP_DIR'] . $_SESSION['lang'] . ".php");
 include_once($GLOBALS['APP_DIR'] . "application/functions.php");
 include_once($GLOBALS["APP_DIR"] . "models/GenericDBFunctions.php");
-include_once($GLOBALS["APP_DIR"] . "DDICT/masterFunctions.php");
+require_once($GLOBALS["APP_DIR"] . "DDICT/masterFunctions.php");
 
 
-//Calling function to generate Datadictionary
-//generate_data_dictionary();
-if (!isset($_SESSION["datadictionary"]) && empty($_SESSION["datadictionary"]) || $GLOBALS['session_set'] == 0)
-{
-  $GLOBALS['session_set'] = 1;
-  //intake_array($GLOBALS);
-}
-//exit($GLOBALS["APP_DIR"]);
-//include_once($GLOBALS["APP_DIR"] . "system/special_config.php");
+
 ?>
 
 <!doctype html>
@@ -30,18 +20,23 @@ if (!isset($_SESSION["datadictionary"]) && empty($_SESSION["datadictionary"]) ||
     <title></title>
     <link href='http://fonts.googleapis.com/css?family=Galdeano' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:700italic,400,600,800' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>bootstrap.min.css" type="text/css">
+    
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>bootstrap.min_1.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>carousel.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>font-awesome.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>style.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>common-responsive.css" type="text/css">
     <link rel="stylesheet" href="<?php echo BASE_CSS_URL ?>responsive.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL ?>appConfig/custom-css.css" type="text/css">
     <script src="http://scrollrevealjs.org/js/scrollReveal.min.js?ver=0.2.0-rc.1"></script>
     <link rel="stylesheet" href="<?php echo BASE_URL ?>socprox3.0/resources/css/responsive.css" />
     <link rel="stylesheet" href="<?php echo BASE_URL ?>socprox3.0/resources/css/style.css">
     <script src="<?php echo BASE_URL ?>socprox3.0/resources/js/jquery-1.11.1.min.js"></script>
     <script src="<?php echo BASE_URL ?>socprox3.0/resources/js/jquery-ui.js"></script>
+    <script src="<?php echo BASE_URL ?>application/js/modernizr.js"></script>
+     
+ <link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/s/dt/dt-1.10.10/datatables.min.css'/>
+ <script type='text/javascript' src='https://cdn.datatables.net/s/dt/dt-1.10.10/datatables.min.js'></script>
      <script src="http://malsup.github.com/jquery.form.js"></script> 
     
 
@@ -52,7 +47,7 @@ if (!isset($_SESSION["datadictionary"]) && empty($_SESSION["datadictionary"]) ||
 
       UPLOADCARE_PUBLIC_KEY = '4c3637988f9b93d343e8';
       UPLOADCARE_LOCALE_TRANSLATIONS = {
-        ready: 'Update Profile Photo'
+        ready: 'Update Photo'
       };
       UPLOADCARE_LOCALE_TRANSLATIONS = {
         errors: {

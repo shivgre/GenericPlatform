@@ -1,12 +1,12 @@
     <?php
 session_start();
 
+require_once("../appConfig/appConfig.php");
+
+
+include_once("../application/database/db.php");
 require_once '../application/config.php';
-
-
-
-include_once($GLOBALS['DATABASE_APP_DIR'] . "db.php");
-include_once($GLOBALS['APP_DIR'] . "application/functions.php");
+require_once '../application/functions.php';
 include_once($GLOBALS['APP_DIR'] . "actions/CustomHtml.php");
 
 if (isset($_SESSION['lang']))

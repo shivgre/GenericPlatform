@@ -29,6 +29,9 @@ d('Get off my lawn!'); // no effect
 
 Kint::enabled(true);
 //Kint::trace();
+require_once("appConfig/appConfig.php");
+
+require_once("application/database/db.php");
 include("application/header.php");
 
 // Kint::dump( $_SESSION );

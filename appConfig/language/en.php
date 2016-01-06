@@ -1,10 +1,4 @@
 <?php
-
-if ($_SERVER['HTTP_HOST'] === 'localhost')
-  include_once($_SERVER['DOCUMENT_ROOT'] . '/application/config.php');
-else
-  include_once($_SERVER['DOCUMENT_ROOT'] . '/generic/application/config.php');
-
 /* * *SITE INFORMATION********* */
 define("SITE_TITLE", "Generic Platform");
 define("BRAND_LOGO", "Generic <span>LOGO</span>");
@@ -212,4 +206,158 @@ define("SORT_BUTTON", "SORT");
 define("SEARCH_BUTTON", "Searech Users");
 define("SORT_BY", "Sort By");
 define("PROJECT_VISBILITY_LABEL", "Project Visibility");
+
+
+/* ****** SPECIAL CONSTANTS  ****  */
+
+
+
+/*  Constants for DD DataDictionary Special Display Pages */
+define("DISPLAY_PAGE_HOME", "HOME");
+define("DISPLAY_PAGE_ACCOUNT", "MYACCOUNT");
+define("DISPLAY_PAGE_USERPROFILE", "USERPROFILE");
+define("DISPLAY_PAGE_PROJECT", "MYPROJECTS");
+define("DISPLAY_PAGE_PROJECTPROFILE", "PROJECTPROFILE");
+define("DISPLAY_PAGE_TRANSACTION", "TRANSACTION");
+define("DISPLAY_PAGE_OTHER", "OTHER");
+
+
+
+
+/*  Constants for DD DataDictionary Special Table Types  */
+$internal_table_types = array(
+"USER",
+"PROJECT",
+"CROSSREF",
+"TRANSACTION",
+"CHILD",
+"P2P");
+
+$arrlength=count($internal_table_types);
+for($x=0;$x<$arrlength;$x++)
+  {
+  $z=$internal_table_types[$x]."_TABLETYPE";
+  define($z, $internal_table_types[$x]);
+  }
+
+
+
+/*  Constants for FD FieldDictionary Special Format Types */
+
+
+
+$internal_field_identifier = array(
+"USER",
+"PROJECT",
+"CROSSREF",
+"TRANSACTION",
+"CHILD",
+"P2P");
+
+$internal_field_identifier["USER"]= array(
+"USERID",
+"USERNAME",
+"PASSWORD",
+"PROFILE_IMAGE",
+
+
+"FIRSTNAME",
+"LASTNAME",
+
+"EMAIL",
+"STATE",
+"CITY",
+"ZIPCODE" ,
+"COUNTRY",
+
+"ABOUTME",
+"INTERESTS",
+"SKILLS",
+"DESCRIPTION",
+"COMPANY",
+"RESETPASSWORD",
+"RESETFLAG",
+"ISACTIVE",
+"LOGINIP",
+"DATEADDED",
+"LAST_LOGIN",
+"UPLOAD_CARE_IMG_URL",
+"OAUTH_PROVIDER",
+"TWITTER_OAUTH_TOKEN",
+"TWITTER_OAUTH_TOKEN_SECRET",
+"TWITTER_ACCOUNT",
+"FACEBOOK_ACCOUNT",
+"GOOGLEPLUS_ACCOUNT",
+"USER_TYPE",
+"USER_TYPE_STATUS",
+"USER_PRIVILEGE_LEVEL"
+);
+
+
+$internal_field_identifier["PROJECT"]= array(
+
+"PROJECT_ID",
+"PID",
+"PROJECT_NAME",
+"PROJECT_DESC",
+"PROJECT_EXPIRATION",
+"PROJECT_PRICE",
+"PROJECT_QTY",
+"PROJECT_IS_LIVE",
+"PROJECT_PURCHASED",
+"PROJECT_TRANSACTION_ID",
+
+"IMAGE",
+"PROJECT_IMAGE",
+"OWNER_ID",
+
+"PROJECT_VIDEO"
+
+);
+
+/*
+Special Field_Identifiers
+KEYFIELD
+KEYFIELD_2
+KEYFIELD_3
+
+"INTERNAL_REQUIRED",
+
+"UNUSED",
+"TEXT",
+"TEXT-",
+"NUMBER",
+"NUMBER-",
+"DATE",
+"DATE-",
+"YESNO";
+
+"IMAGE",
+"UNUSED",
+
+"DROPDOWN",
+
+
+RICHTEXT
+(Blank = standard regular length field)
+(TEXT# = specific length text fiedld)
+(other formats
+CURRENCY
+*/
+
+
+
+// dd($internal_field_identifier);
+
+/*
+$arrlength=count($internal_field_identifier);
+
+for($x=0;$x<$arrlength;$x++)
+  {
+  define($internal_field_identifier[$x]."_FT", $internal_field_identifier[$x]);
+  }
+*/
 ?>
+
+
+

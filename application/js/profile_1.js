@@ -142,6 +142,11 @@ $(document).ready(function () {
     $(".left-content").on("click", function (event) {
 
         imgHolder = this;
+/*
+        if (old_imgHolder == '') {
+            old_imgHolder = imgHolder;
+        }*/
+       // console.log(imgHolder);
 
         // Avoid the real one
         event.preventDefault();
@@ -166,6 +171,28 @@ $(document).ready(function () {
 // If the menu element is clicked
     $(".image-menu li").on("click", function () {
 
+        ////for revert function
+
+/*
+
+        var fieldName = $(imgHolder).find(".user_thumb").attr("alt");
+
+
+        var old_fieldName = $(old_imgHolder).find(".user_thumb").attr("alt");
+
+        if (fieldName != old_fieldName) {
+
+            console.log('change');
+            old_imgHolder = imgHolder;
+        }
+
+
+
+
+         console.log(old_imgHolder);*/
+
+        ///end revert function use-case
+
         // This is the triggered action name
         switch ($(this).attr("data-action")) {
 
@@ -181,7 +208,7 @@ $(document).ready(function () {
                 enlarge_img(imgHolder);
                 break;
 
-            case "revert":
+            case "revertt":
                 revert_img(imgHolder);
                 break;
 
@@ -262,43 +289,29 @@ $(document).ready(function () {
     }
 
 
-    function revert_img(imgHolder) {
-        
+    function revert_img(imgHolder, oldHolder) {
+        // fetching field name
         var fieldName = $(imgHolder).find(".user_thumb").attr("alt");
-       
-          $.ajax({
-                method: "GET",
-                url: "ajax-actions.php",
-                data: {img_revert:'img-revert',field_name:fieldName}
-            })
-                    .done(function (msg) {
+        //////
+        console.log(oldHolder);
+        ////fetchign old values
+        var imgSrc = $(oldHolder).find(".user_thumb").attr("src");
+        //  console.log(imgSrc);
+        var firstInput = $(oldHolder).find("." + fieldName).val();
 
-                       if(msg){
-                          
-                        $(imgHolder).find(".user_thumb").attr("src", "../users_uploads/" + msg);     
-                
-                $(imgHolder).find("." + fieldName).val(msg);
-                
-                 $(imgHolder).find(".img-extra").html('');
-                           
-                       }else{
-                           
-                         $(imgHolder).find(".user_thumb").attr("src", "../users_uploads/NO-IMAGE-AVAILABLE-ICON.jpg");
-                 
-                  $(imgHolder).find("." + fieldName).val('');
-                  
-                  $(imgHolder).find(".img-extra").html('');
-                       }
-                    })
-                    
-                    
-                      .fail(function (msg) {
+        var secInput = $(oldHolder).find("#" + fieldName).val();
 
-                       console.log(msg);
-                    });
-                    
-              
-       
+        var imgExtra = $(oldHolder).find(".img-extra").html();
+
+
+        //// replacing new values with old values ;)
+        $(imgHolder).find(".user_thumb").attr("src", imgSrc);
+
+        $(imgHolder).find("." + fieldName).val(firstInput);
+
+        $(imgHolder).find("#" + fieldName).val(secInput);
+
+        $(imgHolder).find(".img-extra").html(imgExtra);
     }
 
 

@@ -1,33 +1,4 @@
 <?php
-
-//session_start();
-
-if ($_SERVER['HTTP_HOST'] === 'localhost')
-
-{ define('APP_DIR', $_SERVER['DOCUMENT_ROOT'].'generic-platforms/'); // Base Root or Directory Path For Application
-
-  $GLOBALS['APP_DIR'] = $_SERVER['DOCUMENT_ROOT'] . 'generic-platforms/'; // Base Root or Directory Path For Application
-
-}
-else
-{
-  define('APP_DIR', $_SERVER['SUBDOMAIN_DOCUMENT_ROOT']); // Base Root or Directory Path For Application
-  $GLOBALS['APP_DIR'] = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] . '/'; // Base Root or Directory Path For Application
-}
-
-
-
-if (isset($_SESSION['lang']))
-{
-  include($GLOBALS['APP_DIR'] . "application/language/" . $_SESSION['lang'] . ".php");
-}
-else
-{
-  include($GLOBALS['APP_DIR'] . "application/language/en.php");
-}
-
-
-
 // Root directory
 function isUserLoggedin()
 {
@@ -142,7 +113,7 @@ class FlashMessage
 
 function imageUpload($fileDetails)
 {
-  print_r($fileDetails);
+  //print_r($fileDetails);
 
   $allowedExts = array("gif", "jpeg", "jpg", "png", "JPEG", "JPG");
   $temp = explode(".", $fileDetails["projectImage"]["name"]);

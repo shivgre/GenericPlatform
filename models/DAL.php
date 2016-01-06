@@ -1,9 +1,5 @@
 <?php
 
-if ($_SERVER['HTTP_HOST'] === 'localhost')
-   include_once($_SERVER['DOCUMENT_ROOT'] . 'generic-platforms/application/config.php');
-else
-  include_once($_SERVER['SUBDOMAIN_DOCUMENT_ROOT'] . "/application/database/db.php");
 
 class DAL
 {

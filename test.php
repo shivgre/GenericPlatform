@@ -1,136 +1,195 @@
+<?php
 
-<!doctype html>
-<html>
+function test($name){
+    
+    ?>
+
+<h1><?= $name;?></h1>
+<?php
+}
+?>
+
+
+<!DOCTYPE html>
+<html lang='en'>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>
-Generic CJcornell</title>
-<link href='http://fonts.googleapis.com/css?family=Galdeano' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:700italic,400,600,800' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="http://genericveryold.cjcornell.com/application/css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="http://genericveryold.cjcornell.com/application/css/carousel.css" type="text/css">
-<link rel="stylesheet" href="http://genericveryold.cjcornell.com/application/css/font-awesome.css" type="text/css">
-<link rel="stylesheet" href="http://genericveryold.cjcornell.com/application/css/style.css" type="text/css">
-<link rel="stylesheet" href="http://genericveryold.cjcornell.com/application/css/common-responsive.css" type="text/css">
-<link rel="stylesheet" href="http://genericveryold.cjcornell.com/application/css/responsive.css">
-<script src="http://scrollrevealjs.org/js/scrollReveal.min.js?ver=0.2.0-rc.1"></script>
-<!-- CAPSTONE: Override Uploadcare text -->
-<script type="text/javascript">
+<meta charset='UTF-8'>
+<title>Example of Bootstrap 3 Modals</title>
+<link rel='stylesheet' href='http://localhost/generic-platforms/application/css/bootstrap.min_1.css' type='text/css'>
+   <link rel="stylesheet" href="http://localhost/generic-platforms/application/css/style.css" type="text/css">
 
-	UPLOADCARE_PUBLIC_KEY = '4c3637988f9b93d343e8';
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
+ 
+<style>
+#page_navigation{display: block;clear: both;}    
+#page_navigation a{
+    
+	padding:3px;
+	border:1px solid gray;
+	margin:2px;
+	color:black;
+	text-decoration:none
+}
+.active_page{
+	background:darkblue;
+	color:white !important;
+}
+</style>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
 	
-	UPLOADCARE_LOCALE_TRANSLATIONS = {
-		ready: 'Update Profile Photo'
-	};
-	UPLOADCARE_LOCALE_TRANSLATIONS = {
-	  errors: {
-		'portrait': "Landscape images only",
-		'dimensions': "Dimensions should be more or equal to 650 X 130"  // message for widget
-	  },
-	  dialog: {tabs: {preview: {error: {
-		'portrait': {  // messages for dialog's error page
-		  title: "No portrait images are allowed.",
-		  text: "We are sorry but image should be landscape.",
-		  back: "Back"
-		},
-		'dimensions': {  // messages for dialog's error page
-		  title: "Dimensions should be more or equal to 650 X 130",
-		  text: "We are sorry but image Dimensions should be more or equal to 650 X 130.",
-		  back: "Back"
-		}
-	  } } } }
-	};
-	UPLOADCARE_PATH_VALUE = true; 
-	UPLOADCARE_CROP = "2:3";
+	//how much items per page to show
+	var show_per_page = 2; 
+	//getting the amount of elements inside content div
+	var number_of_items = $('#content').children('.boxView').size();
+	//calculate the number of pages we are going to have
+	var number_of_pages = Math.ceil(number_of_items/show_per_page);
+	
+	//set the value of our hidden input fields
+	$('#current_page').val(0);
+	$('#show_per_page').val(show_per_page);
+	
+	//now when we got all we need for the navigation let's make it '
+	
+	/* 
+	what are we going to have in the navigation?
+		- link to previous page
+		- links to specific pages
+		- link to next page
+	*/
+	var navigation_html = '<a class="previous_link" href="javascript:previous();">Prev</a>';
+	var current_link = 0;
+	while(number_of_pages > current_link){
+		navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
+		current_link++;
+	}
+	navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';
+	
+	$('#page_navigation').html(navigation_html);
+	
+	//add active_page class to the first page link
+	$('#page_navigation .page_link:first').addClass('active_page');
+	
+	//hide all the elements inside content div
+	$('#content').children('.boxView').css('display', 'none');
+	
+	//and show the first n (show_per_page) elements
+	$('#content').children('.boxView').slice(0, show_per_page).css('display', 'block');
+	
+});
+
+function previous(){
+	
+	new_page = parseInt($('#current_page').val()) - 1;
+	//if there is an item before the current active link run the function
+	if($('.active_page').prev('.page_link').length==true){
+		go_to_page(new_page);
+	}
+	
+}
+
+function next(){
+	new_page = parseInt($('#current_page').val()) + 1;
+	//if there is an item after the current active link run the function
+	if($('.active_page').next('.page_link').length==true){
+		go_to_page(new_page);
+	}
+	
+}
+function go_to_page(page_num){
+	//get the number of items shown per page
+	var show_per_page = parseInt($('#show_per_page').val());
+	
+	//get the element number where to start the slice from
+	start_from = page_num * show_per_page;
+	
+	//get the element number where to end the slice
+	end_on = start_from + show_per_page;
+	
+	//hide all children elements of content div, get specific items and show them
+	$('#content').children('.boxView').css('display', 'none').slice(start_from, end_on).css('display', 'block');
+	
+	/*get the page link that has longdesc attribute of the current page and add active_page class to it
+	and remove that class from previously active page link*/
+	$('.page_link[longdesc=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
+	
+	//update the current page input field
+	$('#current_page').val(page_num);
+}
+  
 </script>
+
+ 
+
 </head>
 <body>
-
-<!-- <div style="height:450px"></div>-->
-<script type="text/javascript">
-	(function($) {
-	"use strict";
-	window.scrollReveal = new scrollReveal({ reset: true, move: "50px" });
-	})();
+    
+    <!-- the input fields that will hold the variables we will use -->
+	<input type='hidden' id='current_page' />
+	<input type='hidden' id='show_per_page' />
 	
-</script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-<script src="https://ucarecdn.com/widget/2.4.0/uploadcare/uploadcare.full.min.js" charset="utf-8"></script>
+	<!-- Content div. The child elements will be used for paginating(they don't have to be all the same,
+		you can use divs, paragraphs, spans, or whatever you like mixed together). '-->
+        <div id='content'>
+            
+            
+            
+            
+<div class="project-details-wrapper boxView">
+                            <div class="col-6 col-sm-6 col-lg-3" data-scroll-reveal="enter bottom over 1s and move 100px">
+                                <div class="project-detail"> 
 
-<script>
-$( "#myprojects_tab" ).mouseover(function() {	
-	  $( this).addClass("open");	 
-});
-$( "#myprojects_tab" ).mouseout(function() {	
-	  $( this).removeClass("open");	 
-});
-</script>
+                                    <a href=""><span class="profile-image">
+        <img src="http://localhost/generic-platforms/users_uploads/NO-IMAGE-AVAILABLE-ICON.jpg" alt="" class="img-responsive"></span></a><span class="list-data"><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false"><span class="list-span">solid  1 </span></a><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false" class="btn btn-primary edit">Edit</a></span></div></div></div>
+        
+        
+        <div class="project-details-wrapper boxView">
+                            <div class="col-6 col-sm-6 col-lg-3" data-scroll-reveal="enter bottom over 1s and move 100px">
+                                <div class="project-detail"> 
 
-<div class="content">
-  <div id="profile">
-    <div class='title'><br/></div><div class='contentWrapper'>    <div class="jumbotron search-form profile-complete">
-      <div class="container">
-        <div class="row">
-          <div class="col-6 col-sm-6 col-lg-3 height2">
-                      </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row" >
-          <div class="col-6 col-sm-6 col-lg-3">
-            <form action="form-actions.php" method="post">
-              <div class='left-content'> <span> <img id="user_thumb" src="users_uploads/defaultImageIcon.png" border="0" width="200" height="200" class="img-thumbnail img-responsive" style="width:100%;" /> </span>
-                <div>
-                                    <input type="hidden" role="uploadcare-uploader" name="image" id="file2" data-locale="en" data-tabs="file url facebook gdrive instagram" data-images-only="false" data-path-value="false" data-preview-step="false" data-multiple="false"  value="" data-crop="650x430 minimum"/>
-                  <br />
-                  <input type="hidden" name="uploadcare_image_url" id="uploadcare_image_url" value="" />
-                  <input type="hidden" name="uploadcare_image_name" id="uploadcare_image_name" value="" />
-                  <input type="hidden" name="profile_id" id="profile_id" value="16" />
-                  <div style="margin:5% 0%">
-                    <input type="submit" class="submit btn btn-primary pull-left" name="profile_image_submit" id="login" value="SAVE">
-                    <input type="button" onclick="location.href='http://genericveryold.cjcornell.com/profile.php'" class="submit btn btn-primary  pull-right" name="login" value="CANCEL"/>
-                  </div>
-                                  </div>
-              </div>
-                
-                
-                
-                    <div class='left-content'> <span> <img id="user_thumb" src="users_uploads/defaultImageIcon.png" border="0" width="200" height="200" class="img-thumbnail img-responsive" style="width:100%;" /> </span>
-                <div>
-                                    <input type="hidden" role="uploadcare-uploader" name="image" id="file2" data-locale="en" data-tabs="file url facebook gdrive instagram" data-images-only="false" data-path-value="false" data-preview-step="false" data-multiple="false"  value="" data-crop="650x430 minimum"/>
-                  <br />
-                  <input type="hidden" name="uploadcare_image_url2" id="uploadcare_image_url" value="" />
-                  <input type="hidden" name="uploadcare_image_name2" id="uploadcare_image_name" value="" />
-                  <input type="hidden" name="profile_id" id="profile_id" value="16" />
-                  <div style="margin:5% 0%">
-                    <input type="submit" class="submit btn btn-primary pull-left" name="profile_image_submit" id="login" value="SAVE">
-                    <input type="button" onclick="location.href='http://genericveryold.cjcornell.com/profile.php'" class="submit btn btn-primary  pull-right" name="login" value="CANCEL"/>
-                  </div>
-                                  </div>
-              </div>
-                
-                
-                
-            </form>
-          </div>
+                                    <a href=""><span class="profile-image">
+        <img src="http://localhost/generic-platforms/users_uploads/377Chrysanthemum.jpg" alt="" class="img-responsive"></span></a><span class="list-data"><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false"><span class="list-span">2   </span></a><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false" class="btn btn-primary edit">Edit</a></span></div></div></div>
+        
+        
+        
+        <div class="project-details-wrapper boxView">
+                            <div class="col-6 col-sm-6 col-lg-3" data-scroll-reveal="enter bottom over 1s and move 100px">
+                                <div class="project-detail"> 
+
+                                    <a href=""><span class="profile-image">
+        <img src="http://localhost/generic-platforms/users_uploads/650Tulips.jpg" alt="" class="img-responsive"></span></a><span class="list-data"><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false"><span class="list-span">3   </span></a><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false" class="btn btn-primary edit">Edit</a></span></div></div></div>
+        
+        
+        <div class="project-details-wrapper boxView">
+                            <div class="col-6 col-sm-6 col-lg-3" data-scroll-reveal="enter bottom over 1s and move 100px">
+                                <div class="project-detail"> 
+
+                                    <a href=""><span class="profile-image">
+        <img src="http://localhost/generic-platforms/users_uploads/NO-IMAGE-AVAILABLE-ICON.jpg" alt="" class="img-responsive"></span></a><span class="list-data"><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false"><span class="list-span">4   </span></a><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false" class="btn btn-primary edit">Edit</a></span></div></div></div>
+        
+        
+        <div class="project-details-wrapper boxView">
+                            <div class="col-6 col-sm-6 col-lg-3" data-scroll-reveal="enter bottom over 1s and move 100px">
+                                <div class="project-detail"> 
+
+                                    <a href=""><span class="profile-image">
+        <img src="http://localhost/generic-platforms/users_uploads/NO-IMAGE-AVAILABLE-ICON.jpg" alt="" class="img-responsive"></span></a><span class="list-data"><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false"><span class="list-span">5   </span></a><a href="http://localhost/generic-platforms/system/profile.php?display=myaccount&amp;tab=transactions&amp;tabNum=6&amp;ta=transactions&amp;search_id=108&amp;checkFlag=true&amp;table_type=child&amp;edit=true#false" class="btn btn-primary edit">Edit</a></span></div></div></div>
+        
+        
         
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-
-<!--<script src="http://genericveryold.cjcornell.com/application/js/jquery-1.10.2.min.js"></script> -->
-<script src="http://genericveryold.cjcornell.com/application/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-     /* (function($) {
-        'use strict';
-        window.scrollReveal = new scrollReveal({ reset: true, move: '50px' });
-      })();*/
-    </script>
+        
+        
+        <br>
+	<!-- An empty div which will be populated using jQuery -->
+	<div id='page_navigation'></div>
+    
+    <?php
+  
+    echo test("khan");
+?>    
 </body>
-</html>
+</html>                                		

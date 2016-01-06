@@ -3,11 +3,9 @@ ob_start();
 session_start();
 include("../kint/Kint.class.php");
 
+require_once("../appConfig/appConfig.php");
+include_once("../application/database/db.php");
 require_once '../application/config.php';
-
-
-include_once($GLOBALS['APP_DIR'] . "application/config.php");
-include_once($GLOBALS['DATABASE_APP_DIR'] . "db.php");
 include_once($GLOBALS['APP_DIR'] . "application/functions.php");
 //include $GLOBALS['APP_DIR'] . "system/special_config.php";
 

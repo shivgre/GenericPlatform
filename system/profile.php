@@ -2,6 +2,9 @@
 ////////////////////////
 ////////////////////////////////////
 /////////////////////////////////////////////////////////
+
+require_once("../appConfig/appConfig.php");
+include_once("../application/database/db.php");
 include("../application/header.php");
 
 
@@ -67,7 +70,7 @@ Navigation($display_page);
 
                     $rs = $con->query("SELECT tab_num FROM data_dictionary where display_page='$display_page'");
 
-                    //$right_sidebar = $left_sidebar = 'false';
+//$right_sidebar = $left_sidebar = 'false';
 
                     while ($row = $rs->fetch_assoc()) {
 
@@ -108,7 +111,7 @@ Navigation($display_page);
                     } else {
                         echo "<div class='col-12 col-sm-12 col-lg-12 right-content user-profile'>";
                     }
-                    //if( $both_sidebar == 'false' &&  $right_sidebar == 'false' && $left_sidebar == 'false'  )
+//if( $both_sidebar == 'false' &&  $right_sidebar == 'false' && $left_sidebar == 'false'  )
                     ?>
 
 
@@ -224,13 +227,67 @@ if ($popup_menu['popupmenu'] == 'true') {
 }
 ?>
 
+
+<!-- modal view dialog to display  Enlarge image -->
+
+
+<div id="imgModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                
+                <img src="" class="img-responsive img-modal">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- modal view dialog to display  Enlarge image -->
+
+
+
+
+<ul class='image-menu'>
+    <li data-action='upload'  class='popup-class'>Upload/Replace Image</li>
+    <li data-action='enlarge'  class='popup-class'>View Image</li>
+    <li data-action='remove'  class='popup-class'>Remove</li>
+    <li data-action='revert'  class='popup-class'>Revert Changes</li>
+
+</ul>
+
+
+<a href="#" class="scrollToTop">Scroll To Top</a>
+
 <script>
 
 
     $(document).ready(function () {
 
-
-        $('.project-detail:even').css('background-color', '#bbbbff'); //list rows zebra colors
+ $('.display').DataTable();
+ 
+ //// to stop from going to edit screen//
+ 
+ $('.list-checkbox').on('click',function(){
+        
+        event.stopImmediatePropagation();
+    });
+ 
+ ///to make anchor tag/////
+ $('.display').on('click','tr:not(.tr-heading)',function(){
+        
+        window.location= $(this).attr('id');
+    });
+      /*  $('.project-detail:even').css('background-color', '#bbbbff'); //list rows zebra colors*/
 
 
 
@@ -251,6 +308,25 @@ if ($popup_menu['popupmenu'] == 'true') {
                 });
             }
         });
+        
+        /***** THIS IS BYDEFaulT settings
+         * 
+         * @type @call;$@call;attr
+         */
+        
+         jQuery(".project-details-wrapper").removeClass().addClass("project-details-wrapper boxView");
+                //jQuery(".project-details-wrapper .profile-image").hide();
+                jQuery(".project-details-wrapper > div:first-child").removeClass().addClass("col-6 col-sm-6 col-lg-3");
+                jQuery(".edit").removeClass("invisible");
+                jQuery('.project-detail').removeClass('project-detail-list');
+                /*jQuery(".list-checkbox").hide();*/
+               /* jQuery('#checklist-div').hide();
+                jQuery('.list-del').hide();
+                jQuery('.list-copy').hide();*/
+                
+                /*****************************/
+                
+                
         var value;
         jQuery(document).on('click', '.grid-type span', function () {
             var gridType = $(this).attr('id');
@@ -263,6 +339,7 @@ if ($popup_menu['popupmenu'] == 'true') {
                 jQuery(".list-checkbox").show();
                 jQuery('#checklist-div').show();
                 jQuery('.list-del').show();
+                jQuery('.list-copy').show();
             }
 
             if (gridType == "boxView") {
@@ -274,6 +351,7 @@ if ($popup_menu['popupmenu'] == 'true') {
                 jQuery(".list-checkbox").hide();
                 jQuery('#checklist-div').hide();
                 jQuery('.list-del').hide();
+                jQuery('.list-copy').hide();
             }
 
             if (gridType == "thumbView") {
@@ -284,6 +362,7 @@ if ($popup_menu['popupmenu'] == 'true') {
                 jQuery(".list-checkbox").hide();
                 jQuery('#checklist-div').hide();
                 jQuery('.list-del').hide();
+                jQuery('.list-copy').hide();
             }
         });
         var def_sort;
@@ -349,7 +428,7 @@ if (!empty($_GET['sort'])) {
 
         });
 
-
+///when click on delete button////
         $(".action-delete").click(function () {
 
 
@@ -359,27 +438,36 @@ if (!empty($_GET['sort'])) {
                 location.reload();
             });
         });
-        $(".list-del").click(function () {
+
+        ///// when click on delete icon
+        $(".list-del").click(function (event) {
 
 
             if (confirm("Are you sure ,You want to delete the Record!") == true) {
 
 
                 var del_id = $(this).attr('id');
+
+                var dict_id = $(this).attr('name');
+
                 $.ajax({
                     method: "GET",
                     url: "<?= BASE_URL_SYSTEM ?>ajax-actions.php",
-                    data: {list_delete: del_id, check_action: "delete"}
+                    data: {list_delete: del_id, check_action: "delete", dict_id: dict_id}
                 })
                         .done(function (msg) {
+
                             location.reload();
                         });
+            }else{
+            
+            event.stopImmediatePropagation();
             }
 
         });
 
 
-
+///copy button .. multi select
 
         $(".action-copy").click(function () {
 
@@ -390,6 +478,11 @@ if (!empty($_GET['sort'])) {
                 location.reload();
             });
         });
+
+
+
+
+        //// single copy icon
         $(".list-copy").click(function () {
 
 
@@ -397,10 +490,13 @@ if (!empty($_GET['sort'])) {
 
 
                 var del_id = $(this).attr('id');
+
+                var dict_id = $(this).attr('name');
+
                 $.ajax({
                     method: "GET",
                     url: "<?= BASE_URL_SYSTEM ?>ajax-actions.php",
-                    data: {list_copy: del_id, check_action: "copy"}
+                    data: {list_copy: del_id, check_action: "copy", dict_id: dict_id}
                 })
                         .done(function (msg) {
                             location.reload();
@@ -411,10 +507,10 @@ if (!empty($_GET['sort'])) {
 
 
 
-  $(".action-add").click(function () {
+        $(".action-add").click(function () {
 
 
-           window.location.href='<?=$_SESSION['add_url_list']?>';
+            window.location.href = '<?= $_SESSION['add_url_list'] ?>';
         });
         /*
          
@@ -442,10 +538,12 @@ if (!empty($_GET['sort'])) {
          */
 
         var popup_del;
+        var dict_id;
         // Trigger action when the contexmenu is about to be shown
         $(".project-detail").bind("contextmenu", function (event) {
 
             popup_del = $(this).children().attr('id');
+            dict_id = $(this).children().attr('name');
             // Avoid the real one
             event.preventDefault();
             // Show contextmenu
@@ -474,7 +572,7 @@ if (!empty($_GET['sort'])) {
 
                 // A case for each action. Your actions here
                 case "delete":
-                    popup_delete(popup_del);
+                    popup_delete(popup_del, dict_id);
                     break;
                 case "copy":
                     popup_copy(popup_del);
@@ -489,7 +587,7 @@ if (!empty($_GET['sort'])) {
 
         /***** popup DELETE Function ****/
 
-        function popup_delete(del_id) {
+        function popup_delete(del_id, dict_id) {
 
 
             if (confirm("Are you sure ,You want to delete the Record!") == true) {
@@ -499,7 +597,7 @@ if (!empty($_GET['sort'])) {
                 $.ajax({
                     method: "GET",
                     url: "<?= BASE_URL_SYSTEM ?>ajax-actions.php",
-                    data: {list_delete: del_id, check_action: "delete"}
+                    data: {list_delete: del_id, check_action: "delete", dict_id: dict_id}
                 })
                         .done(function (msg) {
                             location.reload();
@@ -545,7 +643,6 @@ if (!empty($_GET['sort'])) {
                 data: {id: id, check_action: "enable_edit"}
             })
                     .done(function (msg) {
-
                         if ($.trim(msg) == 'active') {
                             alert('One edit form is active already');
                         } else {
@@ -556,24 +653,109 @@ if (!empty($_GET['sort'])) {
 
         });
 
+        ///IMAGE FIELD CANCEL BUTTON ACTion
 
-        //$(".login-btn").click(function () {
+        $(".img-cancel").click(function () {
+
+            var profile_img = $(this).attr("name");
+
+            $.ajax({
+                method: "GET",
+                url: "ajax-actions.php",
+                data: {img_cancel: "img-cancel", profile_img: profile_img}
+            })
+                    .done(function () {
+//alert(msg);
+                        location.reload();
 
 
-        // alert(uploadcare.Widget("#uploadcare_image_url").value());
-        // alert($(this).parents(".img-holder").find("#file2").val());
+                    });
 
-        // alert($(this).parents(".img-holder").find(".uploadcare_image_url").val());
-
+        });
 
 
 
-        //  });
+        $(".tab-class").click(function () {
 
+            var tab_name = '<?= $_GET['tab'] ?>';
+
+            var tab_num = '<?= $_GET['tabNum'] ?>';
+
+            $.ajax({
+                method: "GET",
+                url: "ajax-actions.php",
+                data: {tab_check: "true", tab_name: tab_name, tab_num: tab_num}
+            })
+            //.done(function (msg) {
+
+
+
+
+            //});
+
+
+
+
+        });
+
+        
+
+        $(".remove-audio-btn").click(function () {
+
+            //audio_code = $(this).prev(".audio-css").html();
+
+            var field_name = $(this).attr("id");
+
+
+            $(this).siblings(".audio-css").fadeOut("slow");
+            $(this).fadeOut("slow");
+
+
+            $(this).next(".audio-placing").html("<input type='file' name='" + field_name + "' class='form-control'><input type='button' class='btn btn-primary update-btn pull-left audio-cancel rem-img-size'  value='CANCEL'/>");
+
+        });
+
+
+       $(".audio-placing").on("click",".audio-cancel", function(){            
+                
+             $(this).parents(".audio-placing").siblings(".audio-css").fadeIn("slow");
+               
+            $(this).parents(".audio-placing").siblings(".remove-audio-btn").fadeIn("slow");
+            
+            $(this).parents(".audio-placing").siblings(".remove-audio-btn").after("<div class='audio-placing'></div>");
+            
+            $(this).parents(".audio-placing").remove();
+    });
+
+
+
+
+/*****
+ * *************Back to top js
+ */
+
+//Check to see if the window is top if not then display button
+	$(window).scroll(function(){
+		if ($(this).scrollTop() > 100) {
+			$('.scrollToTop').fadeIn();
+		} else {
+			$('.scrollToTop').fadeOut();
+		}
+	});
+	
+	//Click event to scroll to top
+	$('.scrollToTop').click(function(){
+		$('html, body').animate({scrollTop : 0},800);
+		return false;
+	});
+	
 
 
     });
 </script>
+
+
+
 
 
 

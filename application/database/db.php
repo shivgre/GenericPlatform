@@ -1,8 +1,9 @@
 <?php
 
+
 if ($_SERVER['HTTP_HOST'] === 'localhost') {
-    $GLOBALS['db-host'] = "localhost";
     $GLOBALS['db-username'] = "root";
+    $GLOBALS['db-host'] = "localhost";
     $GLOBALS['db-password'] = "";
     $GLOBALS['db-database'] = "generic";
 } else {
@@ -11,20 +12,51 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
      */
     $GLOBALS['db-host'] = "97.74.31.60";
     $GLOBALS['db-username'] = "generic";
-    $GLOBALS['db-password'] = "Elance2014!";
+    $GLOBALS['db-password'] = "Upwork2015!";
     $GLOBALS['db-database'] = "generic";
 }
 
-function connect() {
 
-    return mysqli_connect($GLOBALS['db-host'], $GLOBALS['db-username'], $GLOBALS['db-password'], $GLOBALS['db-database']);
-}
+//print_r($config);die;
+//if (!empty($config['db_name'])) {
+
+
+    function connect($config = 'false') {
+
+        $config = $_SESSION['config'];
+
+        return mysqli_connect($config['db_host'], $config['db_user'], $config['db_password'], $config['db_name']);
+    }
+
+    function connect_generic() {
+
+        return mysqli_connect($GLOBALS['db-host'], $GLOBALS['db-username'], $GLOBALS['db-password'], $GLOBALS['db-database']);
+    }
+
+/*} else {
+
+    function connect($config = 'false') {
+
+       
+        if (!empty($_SESSION['config'])) {
+
+             $config = $_SESSION['config'];
+             
+            return mysqli_connect($config['db_host'], $config['db_user'], $config['db_password'], $config['db_name']);
+        } else {
+          
+            return mysqli_connect($GLOBALS['db-host'], $GLOBALS['db-username'], $GLOBALS['db-password'], $GLOBALS['db-database']);
+        }
+    }
+
+}*/
 
 /////////
 //////////////////////insert/////
 
-function insert($table, $data) {
-    $con = connect();
+function insert($table, $data, $config = 'false') {
+
+    $con = connect($config);
     $is = insertString($data);
     //echo "INSERT INTO $table $is";die;
     mysqli_query($con, "INSERT INTO $table $is");
@@ -41,11 +73,11 @@ function insertString($data) {
     return "($f) VALUES ($v)";
 }
 
-function update($table, $data, $where) {
+function update($table, $data, $where, $config = 'false') {
     $ws = whereString($where);
     $us = updateString($data);
     //exit("UPDATE $table SET $us WHERE $ws");
-    return mysqli_query(connect(), "UPDATE $table SET $us WHERE $ws");
+    return mysqli_query(connect($config), "UPDATE $table SET $us WHERE $ws");
 }
 
 function updateString($data) {
@@ -64,13 +96,18 @@ function whereString($data) {
     return implode(" AND ", $w);
 }
 
-function getWhere($table, $where, $order = "") {
-    $ws = whereString($where);
+function getWhere($table, $where = "false", $order = "") {
 
-    //exit("SELECT * FROM $table WHERE $ws $order");
-    
-    $result = mysqli_query(connect(), "SELECT * FROM $table WHERE $ws $order");
+    if ($where != 'false') {
+        $ws = whereString($where);
 
+        //exit("SELECT * FROM $table WHERE $ws $order");
+
+        $result = mysqli_query(connect(), "SELECT * FROM $table WHERE $ws $order");
+    } else {
+
+        $result = mysqli_query(connect(), "SELECT * FROM $table $order");
+    }
     $r = array();
     while ($row = mysqli_fetch_array($result)) {
         $r[] = $row;
@@ -88,8 +125,10 @@ function get($table, $ws) {
     return $row;
 }
 
-$con = connect();
-
+ $con = connect();
+ 
+ //print_r($con->query("select * from users"));die;
+  
 //$_GET["checkUserName"] = 'testuser';
 //
 //$uname = getWhere('users', array('uname' => $_GET["checkUserName"]));

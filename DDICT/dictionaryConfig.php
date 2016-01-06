@@ -1,6 +1,9 @@
 <?php
 
 //********************************  Configuration  ********************
+
+require("../appConfig/appConfig.php");
+
 require("../application/database/db.php");
 
 require("default.php");
@@ -12,7 +15,11 @@ $FDtbl='field_dictionary';
 
 $DDtbl='data_dictionary';
 
-$DDT= 'data_dictionary_TEMPLATE';
+$DDT= 'data_dictionary_template';
+
+$NAVtbl = 'navigation';
+
+$NAVT = 'navigation_template';
 
 $DATA= array();
 //**********************************************************************

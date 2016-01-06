@@ -1,4 +1,6 @@
 <?php 
+require_once("../appConfig/appConfig.php");
+include_once("../application/database/db.php");
 include("../application/header.php"); 
 
 
