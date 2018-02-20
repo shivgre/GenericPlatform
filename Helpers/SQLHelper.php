@@ -35,14 +35,19 @@ class SQLHelper
     public function queryToDatabase($query){
         $sql = $query;
         $result = $this->connection->query($sql);
-        if ($result->num_rows > 0) {
+        if ($result == true) {
             // output data of each row
-            $results_array = array();
-            $result = $this->connection->query($query);
-            while ($row = $result->fetch_assoc()) {
-                $results_array[] = $row;
+            if(empty($result->num_rows)){
+                return true;
             }
-            return $results_array;
+            else{
+                $results_array = array();
+                $result = $this->connection->query($query);
+                while ($row = $result->fetch_assoc()) {
+                    $results_array[] = $row;
+                }
+                return $results_array;
+            }
         }
         else{
             return "no results found";
