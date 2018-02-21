@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Ryan Linehan
+ * User: Ryan Linehana
  * Date: 2/19/2018
  * Time: 11:42 AM
  */
@@ -29,11 +29,12 @@ class MainPageBuilder
         $this->CreateTableHeadersFromFieldDictionary($displayPage, $menu_location, $oFactory);
         $this->PopulateTable($displayPage, $menu_location, $oFactory);
     }
+
     function CreateAndDisplayTabs($displayPage, $menu_location, Factory $oFactory){
         //Create tabs
         echo "<ul class='nav nav-tabs'>";
         //Query from data dictionary for everything that matches the display page in URL
-        $resArr = $oFactory->SQLHelper()->queryToDatabase("SELECT * FROM `data_dictionary` WHERE `display_page` = \"$displayPage\"");
+        $resArr = $oFactory->SQLHelper()->queryToDatabase("SELECT * FROM `data_dictionary` WHERE `display_page` = \"$displayPage\" ORDER BY `tab_num`");
         $BASE_URL = "http://home.localhost/GenericNew/GenericPlatform/main.php";
 
         foreach($resArr as $key=>$value){
@@ -47,7 +48,7 @@ class MainPageBuilder
     }
 
     function GetInfoFromDataDictionary($displayPage, $menu_location, Factory $oFactory){
-        $resArr = $oFactory->SQLHelper()->queryToDatabase("SELECT * FROM `data_dictionary` WHERE `display_page` = \"$displayPage\"");
+        $resArr = $oFactory->SQLHelper()->queryToDatabase("SELECT * FROM `data_dictionary` WHERE `display_page` = \"$displayPage\"  ORDER BY `tab_num`");
         $this->table_alias = $resArr[$this->tabNum - 1]["table_alias"];
         $this->database_table_name = $resArr[$this->tabNum - 1]["database_table_name"];
         $this->list_fields = $resArr[$this->tabNum - 1]["list_fields"]; //explode(",", $resArr[$this->tabNum - 1]["list_fields"]);
