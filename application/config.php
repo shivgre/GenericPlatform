@@ -3,11 +3,11 @@
 if ($_SERVER['HTTP_HOST'] === 'localhost') {
 
     //define('APP_DIR', $_SERVER['DOCUMENT_ROOT'].'generic-platforms/'); // Base Root or Directory Path For Application
-    define('APP_DIR', $_SERVER['DOCUMENT_ROOT'] . '/GenericPlatformNew/'); // Base Root or Directory Path For Application
+    define('APP_DIR', $_SERVER['DOCUMENT_ROOT'] . '/GenericPlatform/'); // Base Root or Directory Path For Application
 
-    $GLOBALS['APP_DIR'] = $_SERVER['DOCUMENT_ROOT'] . '/GenericPlatformNew/';#'generic/'
+    $GLOBALS['APP_DIR'] = $_SERVER['DOCUMENT_ROOT'] . '/GenericPlatform/';#'generic/'
 
-    define('BASE_URL', 'http://localhost/GenericPlatformNew/');#http://localhost/generic/
+    define('BASE_URL', 'http://localhost/GenericPlatform/');#http://localhost/generic/
 //    ini_set('display_errors', 1);
 //   error_reporting(1);
     error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
