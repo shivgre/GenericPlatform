@@ -51,7 +51,7 @@
 	`database_table_name` VARCHAR(35) NULL DEFAULT NULL,
 	`table_type` ENUM('user','project','transaction','child','crossref','system') NULL DEFAULT NULL,
 	`parent_table` VARCHAR(50) NULL DEFAULT NULL,
-	`parent_key` VARCHAR(50) NULL DEFAULT NULL,
+	`keyfield` VARCHAR(50) NULL DEFAULT NULL,
 	`display_page` VARCHAR(50) NULL DEFAULT NULL,
 	`tab_num` INT(3) NULL DEFAULT NULL,
 	`tab_name` VARCHAR(50) NULL DEFAULT NULL,

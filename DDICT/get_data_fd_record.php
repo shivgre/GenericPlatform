@@ -165,7 +165,7 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
             if (isset($_GET['id']) && $_GET['id'] != '') {
                 $_SESSION['search_id'] = $_GET['id'];
-//$_SESSION['update_table']['parent_key'] = 'id';
+//$_SESSION['update_table']['keyfield'] = 'id';
             }
 
 
@@ -175,16 +175,16 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
             $primary_key = firstFieldName($row1['database_table_name']);
 
 
-            $_SESSION['update_table']['parent_key'] = $primary_key;
+            $_SESSION['update_table']['keyfield'] = $primary_key;
 
 
             if (trim($row1['table_type']) == 'parent') {
 
 
-                $_SESSION['update_table']['child_parent_key'] = (!empty($row1['parent_key']) ? $row1['parent_key'] : $_SESSION['update_table']['parent_key'] );
+                $_SESSION['update_table']['child_parent_key'] = (!empty($row1['keyfield']) ? $row1['keyfield'] : $_SESSION['update_table']['keyfield'] );
 
 
-                $_SESSION['update_table']['child_parent_key_diff'] = (!empty($row1['parent_key']) ? 'true' : 'false');
+                $_SESSION['update_table']['child_parent_key_diff'] = (!empty($row1['keyfield']) ? 'true' : 'false');
             }
 
             /*             * ****** for update or ADD *** */
@@ -206,16 +206,16 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
                 $_SESSION['update_table2']['database_table_name'] = $_SESSION['update_table']['database_table_name'];
 
-                $_SESSION['update_table2']['parent_key'] = $_SESSION['update_table']['parent_key'];
+                $_SESSION['update_table2']['keyfield'] = $_SESSION['update_table']['keyfield'];
 
 
                 if (trim($row1['table_type']) == 'parent') {
 
 
-                    $_SESSION['update_table2']['child_parent_key'] = (!empty($row1['parent_key']) ? $row1['parent_key'] : $_SESSION['update_table']['parent_key']);
+                    $_SESSION['update_table2']['child_parent_key'] = (!empty($row1['keyfield']) ? $row1['keyfield'] : $_SESSION['update_table']['keyfield']);
 
 
-                    $_SESSION['update_table2']['child_parent_key_diff'] = (!empty($row1['parent_key']) ? 'true' : 'false');
+                    $_SESSION['update_table2']['child_parent_key_diff'] = (!empty($row1['keyfield']) ? 'true' : 'false');
                 }
                 //////updating tab_anchor for home pages
 
@@ -241,7 +241,7 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
                     if ($_SESSION['update_table']['child_parent_key_diff'] == 'true') {
 
-                        $child_parent_value = getWhere($row1['database_table_name'], array($_SESSION['update_table']['parent_key'] => $_GET['search_id']));
+                        $child_parent_value = getWhere($row1['database_table_name'], array($_SESSION['update_table']['keyfield'] => $_GET['search_id']));
 
 
                         $_SESSION['parent_value'] = $child_parent_value[0][$_SESSION[update_table][child_parent_key]];
@@ -254,7 +254,7 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
 
 
-                $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['parent_key'], $_GET['search_id']);
+                $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['keyfield'], $_GET['search_id']);
             } else {
 
                 /*
@@ -263,7 +263,7 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
 
                 if (trim($row1['table_type']) != 'transaction')
-                    $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['parent_key'], $_SESSION['search_id']);
+                    $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['keyfield'], $_SESSION['search_id']);
             }
 
 
@@ -404,7 +404,7 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
                 $_SESSION['update_table2']['database_table_name'] = $_SESSION['update_table']['database_table_name'];
 
-                $_SESSION['update_table2']['parent_key'] = $_SESSION['update_table']['parent_key'];
+                $_SESSION['update_table2']['keyfield'] = $_SESSION['update_table']['keyfield'];
 
 
                 if ($_GET['checkFlag'] == 'true') {
@@ -638,7 +638,7 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
 
                     if (isset($_GET['id'])) {
-                        $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['parent_key'], $_GET['id']);
+                        $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['keyfield'], $_GET['id']);
                     }
 //print_r($urow);die;
 

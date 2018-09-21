@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' AND $_GET['action'] == 'add') {
       echo
       $_SESSION['dict_id'] .
       $_SESSION['update_table2']['database_table_name'] .
-      $_SESSION['update_table2']['parent_key'] . "<br>" . $_SESSION[return_url2];
+      $_SESSION['update_table2']['keyfield'] . "<br>" . $_SESSION[return_url2];
       die; */
     //print_r($_POST);die; 
 
@@ -125,27 +125,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' AND $_GET['action'] == 'add') {
     if (!empty($row['list_filter'])) {
 
 
-    $parent_key = explode(";", $row['list_filter']);
+    $keyfield = explode(";", $row['list_filter']);
 
 
-    $firstParent = $parent_key[0];
-   //print_r($parent_key);die;
+    $firstParent = $keyfield[0];
+   //print_r($keyfield);die;
     
-        if (!empty($parent_key[1])) {
+        if (!empty($keyfield[1])) {
 
-        $listCond = $parent_key[1];
+        $listCond = $keyfield[1];
     }
 
 
   //  $checkFlag = false;
 
-    if (!empty($parent_key[0])) {
+    if (!empty($keyfield[0])) {
         $i = 0;
 
 
-        $parent_key = explode(",", $parent_key[0]);
+        $keyfield = explode(",", $keyfield[0]);
 
-        foreach ($parent_key as $val) {
+        foreach ($keyfield as $val) {
 
             $keyField = explode("=", $val);
 
@@ -462,7 +462,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' AND $_GET['action'] == 'update') {
         }
 
         //Dealing with database now
-        $row = getWhere($_SESSION['update_table2']['database_table_name'], array($_SESSION['update_table2']['parent_key'] => $_SESSION['search_id2']));
+        $row = getWhere($_SESSION['update_table2']['database_table_name'], array($_SESSION['update_table2']['keyfield'] => $_SESSION['search_id2']));
 
         $oldFile = $row[0][$file];
 
@@ -477,7 +477,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' AND $_GET['action'] == 'update') {
 //print_r($_POST);die;
     //exit($_SESSION['dict_id']);
 
-    $check = update($_SESSION['update_table2']['database_table_name'], $_POST, array($_SESSION['update_table2']['parent_key'] => $_SESSION['search_id2']));
+    $check = update($_SESSION['update_table2']['database_table_name'], $_POST, array($_SESSION['update_table2']['keyfield'] => $_SESSION['search_id2']));
 
 
     update('data_dictionary', array('dd_editable' => '1'), array('dict_id' => $_SESSION['dict_id']));
@@ -549,7 +549,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_GET['action'] == 'login') {
 
     $tbl = $_SESSION['select_table']['database_table_name'];
 
-    $pKey = $_SESSION['select_table']['parent_key'];
+    $pKey = $_SESSION['select_table']['keyfield'];
 
     $con = connect();
 

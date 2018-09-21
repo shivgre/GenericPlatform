@@ -85,13 +85,13 @@ function display_content($row) {
 
         if (isset($_GET['id']) && $_GET['id'] != '') {
             $_SESSION['search_id'] = $_GET['id'];
-//$_SESSION['update_table']['parent_key'] = 'id';
+//$_SESSION['update_table']['keyfield'] = 'id';
         }
 
 
         $_SESSION['update_table']['database_table_name'] = $row1['database_table_name'];
 
-        $_SESSION['update_table']['parent_key'] = firstFieldName($row1['database_table_name']);
+        $_SESSION['update_table']['keyfield'] = firstFieldName($row1['database_table_name']);
 
         /*         * ****** for update *** */
 
@@ -108,7 +108,7 @@ function display_content($row) {
 
             $_SESSION['update_table2']['database_table_name'] = $_SESSION['update_table']['database_table_name'];
 
-            $_SESSION['update_table2']['parent_key'] = $_SESSION['update_table']['parent_key'];
+            $_SESSION['update_table2']['keyfield'] = $_SESSION['update_table']['keyfield'];
 
             $_SESSION['anchor_tag'] = "#" . $tab_anchor;
 
@@ -140,10 +140,10 @@ function display_content($row) {
                 $_SESSION['parent_value'] = $_GET['search_id'];
             }
 
-            $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['parent_key'], $_GET['search_id']);
+            $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['keyfield'], $_GET['search_id']);
         } else {
 
-            $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['parent_key'], $_SESSION['search_id']);
+            $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['keyfield'], $_SESSION['search_id']);
         }
 
 
@@ -158,7 +158,7 @@ function display_content($row) {
 
             $_SESSION['update_table2']['database_table_name'] = $_SESSION['update_table']['database_table_name'];
 
-            $_SESSION['update_table2']['parent_key'] = $_SESSION['update_table']['parent_key'];
+            $_SESSION['update_table2']['keyfield'] = $_SESSION['update_table']['keyfield'];
 
 
             if ($_GET['checkFlag'] == 'true') {
@@ -316,7 +316,7 @@ function display_content($row) {
                 }
 
                 if (isset($_GET['id'])) {
-                    $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['parent_key'], $_GET['id']);
+                    $urow = get_single_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['keyfield'], $_GET['id']);
                 }
 //print_r($urow);die;
 

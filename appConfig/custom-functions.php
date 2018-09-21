@@ -32,8 +32,8 @@ if (isset($_GET["action"]) && !empty($_GET["action"]) && $_GET["action"] == 'exe
 
     if (!empty($check[0])) {
 
-        if (!empty(trim($check[0]['parent_key'])))
-            $primary_key = trim($check[0]['parent_key']);
+        if (!empty(trim($check[0]['keyfield'])))
+            $primary_key = trim($check[0]['keyfield']);
         else
             $primary_key = firstFieldName(trim($check[0]['database_table_name']));
 

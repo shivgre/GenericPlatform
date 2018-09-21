@@ -21,7 +21,7 @@ function Select_Data_FieldDictionary_Record($alias) {
 
     $_SESSION['select_table']['database_table_name'] = $row['database_table_name'];
 
-    $_SESSION['select_table']['parent_key'] = firstFieldName($row['database_table_name']);
+    $_SESSION['select_table']['keyfield'] = firstFieldName($row['database_table_name']);
 
 
     $rs = $con->query("SELECT * FROM field_dictionary INNER JOIN data_dictionary ON data_dictionary.`table_alias` = field_dictionary.`table_alias` where data_dictionary.table_type='users' and data_dictionary.table_alias = '$alias'  order by field_dictionary.display_field_order");

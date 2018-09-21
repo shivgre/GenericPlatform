@@ -475,28 +475,32 @@ function helperOfEPP($id, $mode = 'false') {
 function listFilter($listFilter, $search) {
 
 
-
-    $parent_key = explode(";", $listFilter);
-
-
-    $firstParent = $parent_key[0];
-  // print_r($parent_key);die;
+//echo "<pre>";
+//print_r($listFilter);
+//print_r($search); 
+//die;
     
-        if (!empty($parent_key[1])) {
+    $keyfield = explode(";", $listFilter);
 
-        $listCond = $parent_key[1];
+
+    $firstParent = $keyfield[0];
+    // print_r($keyfield);die;
+
+    if (!empty($keyfield[1])) {
+
+        $listCond = $keyfield[1];
     }
 
 
-  //  $checkFlag = false;
+    //  $checkFlag = false;
 
-    if (!empty($parent_key[0])) {
+    if (!empty($keyfield[0])) {
         $i = 0;
 
 
-        $parent_key = explode(",", $parent_key[0]);
+        $keyfield = explode(",", $keyfield[0]);
 
-        foreach ($parent_key as $val) {
+        foreach ($keyfield as $val) {
 
             $keyField = explode("=", $val);
 
@@ -505,7 +509,7 @@ function listFilter($listFilter, $search) {
             $i++;
         }
     }
-
+    ###'projects=child_product_id'; kind of parameters, same for 'users='
     foreach ($keyVal as $val) {
 
         if (!empty($val['projects'])) {
@@ -523,8 +527,8 @@ function listFilter($listFilter, $search) {
     if (!empty($pid) && !empty($search)) {
 
         $clause = "$pid = '$search'";
-        
-       //$checkFlag = true;
+
+        //$checkFlag = true;
     }
 
     if (!empty($uid)) {
@@ -532,33 +536,30 @@ function listFilter($listFilter, $search) {
         if (!empty($clause)) {
 
             $clause = $clause . " and " . $uid . "=" . $_SESSION['uid'];
-        
-            
         } else {
 
             $clause = $uid . "=" . $_SESSION['uid'];
         }
-        
-      //  $checkFlag = true;
+
+        //  $checkFlag = true;
     }
 
 
-   
 
 
-        if (!empty($clause) && !empty($listCond) ) {
 
-            $clause = $clause . " and " . $listCond;
-            
-        } else if (empty($clause) && !empty($firstParent) ) {
+    if (!empty($clause) && !empty($listCond)) {
 
-            
-            $clause = $firstParent;
-        }
-    
+        $clause = $clause . " and " . $listCond;
+    } else if (empty($clause) && !empty($firstParent)) {
 
 
-   // exit($clause);
+        $clause = $firstParent;
+    }
+
+
+
+    // exit($clause);
 
     return $clause;
 }

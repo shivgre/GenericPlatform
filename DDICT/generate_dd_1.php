@@ -37,7 +37,7 @@ function newDD() {
         //print_r($row);die;
         unset($row['dict_id']);
 
-        $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'parent_key', 'parent_table', 'list_filter', 'list_sort');
+        $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'keyfield', 'parent_table', 'list_filter', 'list_sort');
 
 
         foreach ($ddKeys as $k) {
@@ -81,7 +81,7 @@ function appendDD() {
             
             unset($row['dict_id']);
 
-            $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'parent_key', 'parent_table', 'list_filter', 'list_sort');
+            $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'keyfield', 'parent_table', 'list_filter', 'list_sort');
 
 
             foreach ($ddKeys as $k) {
@@ -105,7 +105,7 @@ function appendDD() {
             /// append
             unset($row['dict_id']);
 
-            $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'parent_key', 'parent_table', 'list_filter', 'list_sort');
+            $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'keyfield', 'parent_table', 'list_filter', 'list_sort');
 
 
             foreach ($ddKeys as $k) {

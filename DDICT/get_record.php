@@ -32,19 +32,20 @@ function get_single_record($db_name, $pkey, $search) {
 
 function get_multi_record($db_name, $pkey, $search, $listFilter = 'false', $singleSort = 'false', $listCheck = 'false') {
 
-
+//echo "<font color=red>\$db_name:$db_name, \$pkey:$pkey, \$search:$search, \$listFilter:$listFilter, \$singleSort:$singleSort, \$listCheck:$listCheck</font><br>";
 
     $_SESSION['update_table']['search'] = $search;
 
 
     $con = connect();
 
-// exit(" db=$db_name, parent_key = $pkey, search_id = $search, list_filter = $listFilter, single_sort = $singleSort, listCheck = $listCheck");
+// exit(" db=$db_name, keyfield = $pkey, search_id = $search, list_filter = $listFilter, single_sort = $singleSort, listCheck = $listCheck");
 
 
     if ($listFilter != 'false')
         $clause = listFilter($listFilter, $search);
 
+//    echo "\$clause:$clause<br>";die;
 
     // exit("select * from $db_name $clause");
 

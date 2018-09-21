@@ -5,18 +5,19 @@
  * ***************************
  * 
  *  function listViews($listData, $table_type, $target_url, $imageField, $listRecord,
- *  $parent_key, $target_url2, $tab_anchor, $user_field, $list_select_arr) 
+ *  $keyfield, $target_url2, $tab_anchor, $user_field, $list_select_arr) 
  */
 
 function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
     $con = connect();
 //how list will know on basis of which key to show the record///
-//$_SESSION['update_table']['parent_key'] = 'uid';
+//$_SESSION['update_table']['keyfield'] = 'uid';
 
     $rs = $con->query($qry);
     $row = $rs->fetch_assoc();
 //    echo "<pre>";
 //    print_r($row);
+//    print_r($_SESSION);
 //    echo "</pre>";
 //    die;
 
@@ -34,16 +35,22 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
 
 
     if (trim($row['table_type']) == 'child')
+    {
         $search_key = $_SESSION['parent_value'];
+        if(empty($row['list_filter']) && $row['parent_table'] == 'product' )
+	{
+            $row['list_filter'] = "projects=$row[keyfield]";#'projects=DD.keyfield' from the child dict_id
+	}
+    }
     else
         $search_key = $_SESSION['search_id'];
 
 
     if (count($list_sort) == 1 && !empty($row['list_sort'])) {
 
-        $list = get_multi_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['parent_key'], $search_key, $row['list_filter'], $list_sort[0], $listCheck);
+        $list = get_multi_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['keyfield'], $search_key, $row['list_filter'], $list_sort[0], $listCheck);
     } else {
-        $list = get_multi_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['parent_key'], $search_key, $row['list_filter'], $listSort = 'false', $listCheck);
+        $list = get_multi_record($_SESSION['update_table']['database_table_name'], $_SESSION['update_table']['keyfield'], $search_key, $row['list_filter'], $listSort = 'false', $listCheck);
     }
 
 
@@ -176,7 +183,7 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
 
     $list_style = $row['list_style'];
 
-    $parent_key = firstFieldName($row['database_table_name']);
+    $keyfield = firstFieldName($row['database_table_name']);
 
     $table_type = trim($row['table_type']);
 
@@ -310,12 +317,12 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
                 if (isset($list_select_arr[0]) && !empty($list_select_arr[0])) {
 
                     if (count($list_select_arr[0]) == 2) {
-                        $target_url = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&ta=" . $list_select_arr[0][0] . "&search_id=" . $listRecord[$parent_key] . "&checkFlag=true&table_type=" . $table_type;
+                        $target_url = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&ta=" . $list_select_arr[0][0] . "&search_id=" . $listRecord[$keyfield] . "&checkFlag=true&table_type=" . $table_type;
 
                         /// add button url
                         $_SESSION['add_url_list'] = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&addFlag=true&checkFlag=true&ta=" . $list_select_arr[0][0] . "&table_type=" . $table_type;
                     } else {
-                        $target_url = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&ta=" . $list_select_arr[0][0] . "&search_id=" . $listRecord[$parent_key] . "&checkFlag=true&table_type=" . $table_type;
+                        $target_url = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&ta=" . $list_select_arr[0][0] . "&search_id=" . $listRecord[$keyfield] . "&checkFlag=true&table_type=" . $table_type;
 
                         /// add button url
                         $_SESSION['add_url_list'] = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&addFlag=true&checkFlag=true&ta=" . $list_select_arr[0][0] . "&table_type=" . $table_type;
@@ -370,8 +377,9 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
                         <input type='hidden' class='show_per_page' />
                     ";
             }
-
-            while ($listRecord = $list->fetch_assoc()) {
+            if ($list->num_rows != 0)
+            {
+                while ($listRecord = $list->fetch_assoc()) {
 
                 $rs = $con->query($qry);
 
@@ -403,13 +411,13 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
                                 if (isset($list_select_arr[0]) && !empty($list_select_arr[0])) {
 
                                     if (count($list_select_arr[0]) == 2) {
-                                        $target_url = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&ta=" . $list_select_arr[0][0] . "&search_id=" . $listRecord[$parent_key] . "&checkFlag=true&table_type=" . $table_type;
+                                        $target_url = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&ta=" . $list_select_arr[0][0] . "&search_id=" . $listRecord[$keyfield] . "&checkFlag=true&table_type=" . $table_type;
 
 
                                         /// add button url
                                         $_SESSION['add_url_list'] = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&addFlag=true&checkFlag=true&ta=" . $list_select_arr[0][0] . "&table_type=" . $table_type;
                                     } else {
-                                        $target_url = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&ta=" . $list_select_arr[0][0] . "&search_id=" . $listRecord[$parent_key] . "&checkFlag=true&table_type=" . $table_type;
+                                        $target_url = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&ta=" . $list_select_arr[0][0] . "&search_id=" . $listRecord[$keyfield] . "&checkFlag=true&table_type=" . $table_type;
 
                                         /// add button url
                                         $_SESSION['add_url_list'] = BASE_URL . "system/profile.php?display=" . $list_select_arr[0][2] . "&tab=" . $list_select_arr[0][0] . "&tabNum=" . $list_select_arr[0][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&addFlag=true&checkFlag=true&ta=" . $list_select_arr[0][0] . "&table_type=" . $table_type;
@@ -422,10 +430,10 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
 
 
                                     if (count($list_select_arr[1]) == 2) {
-                                        $target_url2 = BASE_URL . $navList['item_target'] . "?display=" . $list_select_arr[1][2] . "&tab=" . $list_select_arr[1][0] . "&ta=" . $list_select_arr[1][0] . "&tabNum=" . $list_select_arr[1][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&search_id=" . $listRecord[$parent_key] . "&checkFlag=true&edit=true&fnc=onepage";
+                                        $target_url2 = BASE_URL . $navList['item_target'] . "?display=" . $list_select_arr[1][2] . "&tab=" . $list_select_arr[1][0] . "&ta=" . $list_select_arr[1][0] . "&tabNum=" . $list_select_arr[1][1] . "&layout=" . $navList['page_layout_style'] . "&style=" . $navList['item_style'] . "&search_id=" . $listRecord[$keyfield] . "&checkFlag=true&edit=true&fnc=onepage";
                                     } else {
 
-                                        $target_url2 = BASE_URL . "system/profile.php?display=" . $list_select_arr[1][2] . "&tab=" . $list_select_arr[1][0] . "&ta=" . $list_select_arr[1][0] . "&tabNum=" . $list_select_arr[1][1] . "&search_id=" . $listRecord[$parent_key] . "&checkFlag=true&edit=true&fnc=onepage";
+                                        $target_url2 = BASE_URL . "system/profile.php?display=" . $list_select_arr[1][2] . "&tab=" . $list_select_arr[1][0] . "&ta=" . $list_select_arr[1][0] . "&tabNum=" . $list_select_arr[1][1] . "&search_id=" . $listRecord[$keyfield] . "&checkFlag=true&edit=true&fnc=onepage";
                                     }
                                 }
 
@@ -453,7 +461,7 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
                                             </a>-->";
 
 
-                                    $checkbox_id = $listRecord[$_SESSION['update_table']['parent_key']];
+                                    $checkbox_id = $listRecord[$_SESSION['update_table']['keyfield']];
 
 
 
@@ -546,7 +554,7 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
 
 
 
-                                    listViews($listData, $table_type, $target_url, $imageField, $listRecord, $parent_key, $target_url2, $tab_anchor, $ret_array['users'], $list_select_arr); ///boxview ends here
+                                    listViews($listData, $table_type, $target_url, $imageField, $listRecord, $keyfield, $target_url2, $tab_anchor, $ret_array['users'], $list_select_arr); ///boxview ends here
                                 } else {
                                     /*
                                      * 
@@ -598,7 +606,7 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
                     echo "</tr>";
                 }
             }//// end of while loop
-
+            }
 
             if ($listView != 'boxView') {
                 echo "</tbody></table> ";
@@ -623,7 +631,7 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
  * give LIST UI and data inside lists
  */
 
-function listViews($listData, $table_type, $target_url, $imageField, $listRecord, $parent_key, $target_url2, $tab_anchor, $user_field, $list_select_arr) {
+function listViews($listData, $table_type, $target_url, $imageField, $listRecord, $keyfield, $target_url2, $tab_anchor, $user_field, $list_select_arr) {
     /*
      * 
      * displaying of image in list

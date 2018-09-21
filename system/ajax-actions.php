@@ -52,7 +52,7 @@ if (isset($_POST["checkHidden"]) && !empty($_POST["checkHidden"]) && $_POST["che
     //// actuall multiple deletion of records/////
     $item = implode(",", $_POST['list']);
 
-    //exit("delete from " . $row['database_table_name'] ." where " . $row['parent_key'] . " IN( $item )");
+    //exit("delete from " . $row['database_table_name'] ." where " . $row['keyfield'] . " IN( $item )");
 
 
     mysqli_query($con, "delete from " . $row['database_table_name'] . " where " . firstFieldName($row['database_table_name']) . " IN( $item )");
@@ -79,10 +79,10 @@ if (isset($_POST["checkHidden"]) && !empty($_POST["checkHidden"]) && $_POST["che
 
 
 
-    mysqli_query($con, "CREATE table temporary_table2 AS SELECT * FROM " . $_SESSION['update_table']['database_table_name'] . " WHERE " . $_SESSION['update_table']['parent_key'] . " IN( $item )");
+    mysqli_query($con, "CREATE table temporary_table2 AS SELECT * FROM " . $_SESSION['update_table']['database_table_name'] . " WHERE " . $_SESSION['update_table']['keyfield'] . " IN( $item )");
 
 
-    mysqli_query($con, "UPDATE temporary_table2 SET " . $_SESSION['update_table']['parent_key'] . " =NULL;");
+    mysqli_query($con, "UPDATE temporary_table2 SET " . $_SESSION['update_table']['keyfield'] . " =NULL;");
 
     mysqli_query($con, "INSERT INTO " . $_SESSION['update_table']['database_table_name'] . " SELECT * FROM temporary_table2;");
 
@@ -130,7 +130,7 @@ if (isset($_GET["list_delete"]) && !empty($_GET["list_delete"]) && $_GET["check_
     }
 
 /// deleting actual record////
-    // mysqli_query($con, "delete from " . $_SESSION['update_table']['database_table_name'] . " where " . $_SESSION['update_table']['parent_key'] . "=" . $_GET["list_delete"]);
+    // mysqli_query($con, "delete from " . $_SESSION['update_table']['database_table_name'] . " where " . $_SESSION['update_table']['keyfield'] . "=" . $_GET["list_delete"]);
 
     mysqli_query($con, "delete from " . $row['database_table_name'] . " where " . firstFieldName($row['database_table_name']) . "=" . $_GET["list_delete"]);
 
@@ -147,10 +147,10 @@ if (isset($_GET["list_copy"]) && !empty($_GET["list_copy"]) && $_GET["check_acti
 
 
 
-    mysqli_query($con, "CREATE table temporary_table2 AS SELECT * FROM " . $_SESSION['update_table']['database_table_name'] . " WHERE " . $_SESSION['update_table']['parent_key'] . " = $_GET[list_copy]");
+    mysqli_query($con, "CREATE table temporary_table2 AS SELECT * FROM " . $_SESSION['update_table']['database_table_name'] . " WHERE " . $_SESSION['update_table']['keyfield'] . " = $_GET[list_copy]");
 
 
-    mysqli_query($con, "UPDATE temporary_table2 SET " . $_SESSION['update_table']['parent_key'] . " =NULL;");
+    mysqli_query($con, "UPDATE temporary_table2 SET " . $_SESSION['update_table']['keyfield'] . " =NULL;");
 
     mysqli_query($con, "INSERT INTO " . $_SESSION['update_table']['database_table_name'] . " SELECT * FROM temporary_table2;");
 
@@ -190,7 +190,7 @@ if (isset($_GET["childID"]) && !empty($_GET["childID"]) && $_GET["check_action"]
 
 
 
-            $child_parent_value = getWhere($row['database_table_name'], array($_SESSION['update_table']['parent_key'] => $_GET['childID']));
+            $child_parent_value = getWhere($row['database_table_name'], array($_SESSION['update_table']['keyfield'] => $_GET['childID']));
 
 
             $search_key = $_SESSION['parent_value'] = $child_parent_value[0][$_SESSION[update_table][child_parent_key]];
@@ -314,7 +314,7 @@ if (!empty($_GET["check_action"]) && $_GET["check_action"] == 'image_submit') {
 
     if (!empty($imageInfo)) {
 
-        update($_SESSION['update_table2']['database_table_name'], array($fieldName => $imageInfo['image']), array($_SESSION['update_table2']['parent_key'] => $_SESSION['search_id2']));
+        update($_SESSION['update_table2']['database_table_name'], array($fieldName => $imageInfo['image']), array($_SESSION['update_table2']['keyfield'] => $_SESSION['search_id2']));
     } else {
         exit('notSaved');
     }
@@ -329,7 +329,7 @@ if (!empty($_GET["check_action"]) && $_GET["check_action"] == 'image_delete') {
 
     $fieldName = $_GET['fieldName'];
 
-    $row = getWhere($_SESSION['update_table2']['database_table_name'], array($_SESSION['update_table2']['parent_key'] => $_SESSION['search_id2']));
+    $row = getWhere($_SESSION['update_table2']['database_table_name'], array($_SESSION['update_table2']['keyfield'] => $_SESSION['search_id2']));
 
     $fileName = $row[0][$fieldName];
 
@@ -341,7 +341,7 @@ if (!empty($_GET["check_action"]) && $_GET["check_action"] == 'image_delete') {
     }
 
 
-    $check = update($_SESSION['update_table2']['database_table_name'], array($fieldName => ''), array($_SESSION['update_table2']['parent_key'] => $_SESSION['search_id2']));
+    $check = update($_SESSION['update_table2']['database_table_name'], array($fieldName => ''), array($_SESSION['update_table2']['keyfield'] => $_SESSION['search_id2']));
 
     if ($_GET['profile_img'] != 'no-profile') {
 
@@ -358,7 +358,7 @@ if (!empty($_GET["check_action"]) && $_GET["check_action"] == 'image_delete') {
 /* * ********************************* */
 if (!empty($_GET["img_revert"]) && $_GET["img_revert"] == 'img-revert') {
 
-    $query = getwhere($_SESSION['update_table2']['database_table_name'], array($_SESSION['update_table2']['parent_key'] => $_SESSION['search_id2']));
+    $query = getwhere($_SESSION['update_table2']['database_table_name'], array($_SESSION['update_table2']['keyfield'] => $_SESSION['search_id2']));
 
     $fieldValue = trim($query[0][$_GET[field_name]]);
 

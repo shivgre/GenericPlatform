@@ -63,7 +63,7 @@ class smallUtil {
             //insertion in DD
 
 
-            $qry = "INSERT INTO $DDtbl (`dict_id`, `table_alias`, `database_table_name`, `table_type`, `parent_table`, `parent_key`, `display_page`, `tab_num`, `tab_name`, `dd_editable`, `dd_visibility`, `user_type`, `dd_privilege_level`, `list_views`, `list_filter`, `list_sort`, `list_extra_options`, `list_style`, `description`, `created`, `list_fields`, `fields_used`, `fd_initialization`, `list_select`) VALUES (NULL, '$value', '$value', '', '', '$pKey', '$value', '1', '$labeName', '1', 'DEFAULT', 'ALL', 'USER', 'listview', '', '','checklist; delete,Delete,btn-danger; add,Add,btn-primary;copy,Copy,btn-primary; popupmenu; popup_delete,Delete Check,popup-class;popup_copy,Copy,copy-class;popup_add,ADD,add-class;','', '', '2014-12-02 15:22:51', '', '', 'update', '$value,1,$value');";
+            $qry = "INSERT INTO $DDtbl (`dict_id`, `table_alias`, `database_table_name`, `table_type`, `parent_table`, `keyfield`, `display_page`, `tab_num`, `tab_name`, `dd_editable`, `dd_visibility`, `user_type`, `dd_privilege_level`, `list_views`, `list_filter`, `list_sort`, `list_extra_options`, `list_style`, `description`, `created`, `list_fields`, `fields_used`, `fd_initialization`, `list_select`) VALUES (NULL, '$value', '$value', '', '', '$pKey', '$value', '1', '$labeName', '1', 'DEFAULT', 'ALL', 'USER', 'listview', '', '','checklist; delete,Delete,btn-danger; add,Add,btn-primary;copy,Copy,btn-primary; popupmenu; popup_delete,Delete Check,popup-class;popup_copy,Copy,copy-class;popup_add,ADD,add-class;','', '', '2014-12-02 15:22:51', '', '', 'update', '$value,1,$value');";
 
 
             mysqli_query($con, $qry);
@@ -146,7 +146,7 @@ $arr = array('user');
             //insertion in DD
 
 
-            $qry = "INSERT INTO $DDtbl (`dict_id`, `table_alias`, `database_table_name`, `table_type`, `parent_table`, `parent_key`, `display_page`, `tab_num`, `tab_name`, `dd_editable`, `dd_visibility`, `user_type`, `dd_privilege_level`, `list_views`, `list_filter`, `list_sort`, `list_extra_options`, `list_style`, `description`, `created`, `list_fields`, `fields_used`, `fd_initialization`, `list_select`) VALUES (NULL, '$value', '$tblName', 'parent', '', '$pKey', '$value', '1', '$labeName', '1', 'DEFAULT', 'ALL', '0', 'listview', '', '', 'checklist; delete,Delete,btn-danger; add,Add,btn-primary;copy,Copy,btn-primary; popupmenu; popup_delete,Delete Check,popup-class;popup_copy,Copy,copy-class;popup_add,ADD,add-class;', '', '', '2014-12-02 15:22:51', '', '', 'update', '$value,1,$value');";
+            $qry = "INSERT INTO $DDtbl (`dict_id`, `table_alias`, `database_table_name`, `table_type`, `parent_table`, `keyfield`, `display_page`, `tab_num`, `tab_name`, `dd_editable`, `dd_visibility`, `user_type`, `dd_privilege_level`, `list_views`, `list_filter`, `list_sort`, `list_extra_options`, `list_style`, `description`, `created`, `list_fields`, `fields_used`, `fd_initialization`, `list_select`) VALUES (NULL, '$value', '$tblName', 'parent', '', '$pKey', '$value', '1', '$labeName', '1', 'DEFAULT', 'ALL', '0', 'listview', '', '', 'checklist; delete,Delete,btn-danger; add,Add,btn-primary;copy,Copy,btn-primary; popupmenu; popup_delete,Delete Check,popup-class;popup_copy,Copy,copy-class;popup_add,ADD,add-class;', '', '', '2014-12-02 15:22:51', '', '', 'update', '$value,1,$value');";
 
 
             mysqli_query($con, $qry);
@@ -208,7 +208,7 @@ $arr = array('user');
             //insertion in DD
 
 
-            $qry = "INSERT INTO $DDtbl (`dict_id`, `table_alias`, `database_table_name`, `table_type`, `parent_table`, `parent_key`, `display_page`, `tab_num`, `tab_name`, `dd_editable`, `dd_visibility`, `user_type`, `dd_privilege_level`, `list_views`, `list_filter`, `list_sort`, `list_extra_options`, `list_style`, `description`, `created`, `list_fields`, `fields_used`, `fd_initialization`, `list_select`) VALUES (NULL, '$value', '$tblName', 'child', '', '$pKey', 'userchild', '$i', '$labeName', '1', 'DEFAULT', 'ALL', 'USER', 'listview', 'users=user_id', '', 'checklist; delete,Delete,btn-danger; add,Add,btn-primary;copy,Copy,btn-primary; popupmenu; popup_delete,Delete Check,popup-class;popup_copy,Copy,copy-class;popup_add,ADD,add-class;', '', '', '2014-12-02 15:22:51', '', '', 'update', '$value,$i,userchild');";
+            $qry = "INSERT INTO $DDtbl (`dict_id`, `table_alias`, `database_table_name`, `table_type`, `parent_table`, `keyfield`, `display_page`, `tab_num`, `tab_name`, `dd_editable`, `dd_visibility`, `user_type`, `dd_privilege_level`, `list_views`, `list_filter`, `list_sort`, `list_extra_options`, `list_style`, `description`, `created`, `list_fields`, `fields_used`, `fd_initialization`, `list_select`) VALUES (NULL, '$value', '$tblName', 'child', '', '$pKey', 'userchild', '$i', '$labeName', '1', 'DEFAULT', 'ALL', 'USER', 'listview', 'users=user_id', '', 'checklist; delete,Delete,btn-danger; add,Add,btn-primary;copy,Copy,btn-primary; popupmenu; popup_delete,Delete Check,popup-class;popup_copy,Copy,copy-class;popup_add,ADD,add-class;', '', '', '2014-12-02 15:22:51', '', '', 'update', '$value,$i,userchild');";
 
             
 
@@ -347,7 +347,7 @@ $con->query("update field_dictionary set format_type='dropdown', dropdown_alias=
 
 
 ///////dropdown entry in DD////////
-$con->query("INSERT INTO data_dictionary (`dict_id`, `table_alias`, `database_table_name`, `table_type`, `parent_table`, `parent_key`, `display_page`, `tab_num`, `tab_name`, `dd_editable`, `dd_visibility`, `user_type`, `dd_privilege_level`, `list_views`, `list_filter`, `list_sort`, `list_extra_options`, `list_style`, `description`, `created`, `list_fields`, `fields_used`, `fd_initialization`, `list_select`) VALUES (NULL, 'dropdown_$tbl_name', '$tbl_name', '', '', 'id', 'dropdown_$tbl_name', '1', 'dropdown_$tbl_name', '1', 'DEFAULT', 'ALL', '0', 'listview', '', '', 'ck,popup-class; ', '', '', '2014-12-02 15:22:51', '*~$primary_field,$display_field', '', '', '');");
+$con->query("INSERT INTO data_dictionary (`dict_id`, `table_alias`, `database_table_name`, `table_type`, `parent_table`, `keyfield`, `display_page`, `tab_num`, `tab_name`, `dd_editable`, `dd_visibility`, `user_type`, `dd_privilege_level`, `list_views`, `list_filter`, `list_sort`, `list_extra_options`, `list_style`, `description`, `created`, `list_fields`, `fields_used`, `fd_initialization`, `list_select`) VALUES (NULL, 'dropdown_$tbl_name', '$tbl_name', '', '', 'id', 'dropdown_$tbl_name', '1', 'dropdown_$tbl_name', '1', 'DEFAULT', 'ALL', '0', 'listview', '', '', 'ck,popup-class; ', '', '', '2014-12-02 15:22:51', '*~$primary_field,$display_field', '', '', '');");
 
 
 

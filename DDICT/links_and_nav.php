@@ -186,7 +186,7 @@ function Navigation($page, $menu_location = 'header') {
                          * Fetching Userprivilege first to match
                          */
 
-                        // $userRec = get($_SESSION['select_table']['database_table_name'], $_SESSION['select_table']['parent_key'] . '=' . $_SESSION['uid']);
+                        // $userRec = get($_SESSION['select_table']['database_table_name'], $_SESSION['select_table']['keyfield'] . '=' . $_SESSION['uid']);
                         ///Checking item privilege with user privilege
                         if ($_SESSION['user_privilege'] < $arr[$i]['item_privilege'] && $_SESSION['user_privilege'] <= 9) {
 

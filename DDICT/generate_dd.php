@@ -26,7 +26,7 @@
   `database_table_name` varchar(35) DEFAULT NULL,
   `table_type` varchar(20) DEFAULT NULL,
   `parent_table` varchar(50) DEFAULT NULL,
-  `parent_key` varchar(50) DEFAULT NULL,
+  `keyfield` varchar(50) DEFAULT NULL,
   `display_page` varchar(50) DEFAULT NULL,
   `tab_num` varchar(8) DEFAULT NULL,
   `tab_name` varchar(50) DEFAULT NULL,
@@ -81,7 +81,7 @@
                 //print_r($row);die;
                 unset($row['dict_id']);
 
-                //$ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'parent_key', 'parent_table', 'list_filter', 'list_sort');
+                //$ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'keyfield', 'parent_table', 'list_filter', 'list_sort');
 /// searching/replacing constant 
                 if (isset($APP_DEFAULT['DD']) && !empty($APP_DEFAULT['DD'])) {
 
@@ -147,7 +147,7 @@
 
                 unset($row['dict_id']);
 
-                // $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'parent_key', 'parent_table', 'list_filter', 'list_sort');
+                // $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'keyfield', 'parent_table', 'list_filter', 'list_sort');
 
                 if (isset($DEFAULT['DD']) && !empty($DEFAULT['DD'])) {
 

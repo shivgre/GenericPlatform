@@ -77,7 +77,7 @@
                 //print_r($row);die;
                 unset($row['nav_id']);
 
-                //$ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'parent_key', 'parent_table', 'list_filter', 'list_sort');
+                //$ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'keyfield', 'parent_table', 'list_filter', 'list_sort');
 /// searching/replacing constant 
                 if (isset($APP_DEFAULT) && !empty($APP_DEFAULT['DD'])) {
 
@@ -139,7 +139,7 @@
 
                 unset($row['nav_id']);
 
-                // $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'parent_key', 'parent_table', 'list_filter', 'list_sort');
+                // $ddKeys = array('database_table_name', 'table_alias', 'table_type', 'tab_name', 'keyfield', 'parent_table', 'list_filter', 'list_sort');
 
                 if (isset($APP_DEFAULT['DD']) && !empty($APP_DEFAULT['DD'])) {
 

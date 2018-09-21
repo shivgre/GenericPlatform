@@ -866,7 +866,7 @@ function list_fragment($row2) {
     //$list_fields = explode(',', $dd['list_fields']);
 //print_r($list_fields);die;
 
-    $query = get_listFragment_record($dd['database_table_name'], $dd['parent_key'], $dd['list_filter'], $dd['list_extra_options'], $fields);
+    $query = get_listFragment_record($dd['database_table_name'], $dd['keyfield'], $dd['list_filter'], $dd['list_extra_options'], $fields);
 
 
 
