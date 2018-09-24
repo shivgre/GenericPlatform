@@ -30,9 +30,23 @@ function get_single_record($db_name, $pkey, $search) {
     return $user->fetch_assoc();
 }
 
+/**
+ * Get multi records for list display
+ * 
+ * @param type $db_name
+ * @param type $pkey
+ * @param type $search
+ * @param mixed $listFilter string if no parent-> child relationship of DD.table_type='child' then array('list_filter'=>DD.list_filter, 'child_filter'=>"'DD.database_table_name'.'DD.keyfield'=$search")
+ * @param type $singleSort
+ * @param type $listCheck
+ * @return type
+ */
 function get_multi_record($db_name, $pkey, $search, $listFilter = 'false', $singleSort = 'false', $listCheck = 'false') {
 
 //echo "<font color=red>\$db_name:$db_name, \$pkey:$pkey, \$search:$search, \$listFilter:$listFilter, \$singleSort:$singleSort, \$listCheck:$listCheck</font><br>";
+//echo "<pre>";
+//print_r(USER_TABLETYPE);
+//echo "</pre>";
 
     $_SESSION['update_table']['search'] = $search;
 
@@ -50,11 +64,11 @@ function get_multi_record($db_name, $pkey, $search, $listFilter = 'false', $sing
     // exit("select * from $db_name $clause");
 
     if (!empty($clause))
-        $clause = 'where ' . $clause;
+        $clause = 'WHERE ' . $clause;
 
-    // exit("select * from $db_name $clause");
+//    echo ("SELECT * FROM $db_name $clause");
 
-    $user = $con->query("select * from $db_name $clause");
+    $user = $con->query("SELECT * FROM $db_name $clause");
 
 
 //exit("select * from $db_name where $pkey=$search order by $singleSort");

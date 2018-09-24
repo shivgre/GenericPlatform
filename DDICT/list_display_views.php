@@ -34,13 +34,17 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
 //echo count($list_sort);die;
 
 
-    if (trim($row['table_type']) == 'child')
+    ###if table_type="parent" OR table_type= $internal_table_types[0] OR table_type= $internal_table_types[1]
+    ###(adjusting for lower case)
+    $tableTypeUppercase = strtoupper(trim($row['table_type']) );
+    if (strtolower(trim($row['table_type']) ) == 'child' || $tableTypeUppercase = $internal_table_types['0'] || $tableTypeUppercase = $internal_table_types['1'])
     {
-        $search_key = $_SESSION['parent_value'];
-        if(empty($row['list_filter']) && $row['parent_table'] == 'product' )
-	{
-            $row['list_filter'] = "projects=$row[keyfield]";#'projects=DD.keyfield' from the child dict_id
-	}
+        $search_key = $_SESSION['update_table']['search'];
+        $row['list_filter'] = array('list_filter' => $row['list_filter'], 'child_filter' => "$row[database_table_name].$row[keyfield]=$search_key");
+        //      if(empty($row['list_filter']) && $row['parent_table'] == 'product' )
+        //	{
+        //            $row['list_filter'] = "projects=$row[keyfield]";#'projects=DD.keyfield' from the child dict_id
+        //	}
     }
     else
         $search_key = $_SESSION['search_id'];
