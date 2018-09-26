@@ -80,11 +80,19 @@ function insertString($data) {
     return "($f) VALUES ($v)";
 }
 
-function update($table, $data, $where, $config = 'false') {
+function update($table, $data, $where, $config = 'false') {       
     $ws = whereString($where);
     $us = updateString($data);
-    //exit("UPDATE $table SET $us WHERE $ws");
-    return mysqli_query(connect($config), "UPDATE $table SET $us WHERE $ws");
+//    echo ("UPDATE $table SET $us WHERE $ws");echo "<br>";
+    
+    $con = connect($config); 
+    if(!$status = mysqli_query($con, "UPDATE $table SET $us WHERE $ws") )
+    {
+        $errorMessage = "Error description: database_table_name -> $table, error details - " . mysqli_error($con);
+        if($_SESSION['user_privilege'] == 9 || $_SESSION['user_privilege'] == 3)
+            $status = $errorMessage;
+    } 
+    return $status;
 }
 
 function delete($table, $where) {

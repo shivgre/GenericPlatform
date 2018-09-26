@@ -293,8 +293,10 @@ $data = $_POST;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' AND $_GET['action'] == 'update') {
 
 
-    // echo "<pre>";
-    //print_r($_POST);die;
+//    echo "<pre>";
+//    print_r($_POST);
+//    print_r($_SESSION);
+//    die;
 
 
     if (array_key_exists('old_audio', $_POST)) {
@@ -477,11 +479,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' AND $_GET['action'] == 'update') {
 //print_r($_POST);die;
     //exit($_SESSION['dict_id']);
 
-    $check = update($_SESSION['update_table2']['database_table_name'], $_POST, array($_SESSION['update_table2']['keyfield'] => $_SESSION['search_id2']));
+    $status = update($_SESSION['update_table2']['database_table_name'], $_POST, array($_SESSION['update_table2']['keyfield'] => $_SESSION['search_id2']));
+      
 
-
+//die("shiv");
     update('data_dictionary', array('dd_editable' => '1'), array('dict_id' => $_SESSION['dict_id']));
-
+//die("shiv update 2");
     //echo ($_SESSION['return_url2']);
     //if ($check == 1) {
 
@@ -497,10 +500,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' AND $_GET['action'] == 'update') {
         if ($_GET['fnc'] != 'onepage') {
 
             //exit($link_to_return);
-
-            echo "<script>window.location='$link_to_return'</script>";
+            if($status === true)
+                echo "<script>window.location='$link_to_return';</script>";
+            else
+            {
+                echo "<script> alert(\"$status\"); window.location='$link_to_return'; </script>";
+            }
         } else {
-            echo "<script>window.location='$link_to_return$_SESSION[anchor_tag]'</script>";
+            if($status === true)
+                echo "<script>window.location='$link_to_return$_SESSION[anchor_tag]';</script>";
+            else
+            {
+                echo "<script> alert(\"$status\"); window.location='$link_to_return$_SESSION[anchor_tag]'; </script>";
+            }
         }
     } else {
 
@@ -511,11 +523,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' AND $_GET['action'] == 'update') {
         }
 
         if ($_GET['fnc'] != 'onepage') {
-
-            echo "<script>window.location = '?display=$_SESSION[display]&tab=$_SESSION[tab]&tabNum=$_GET[tabNum]';</script>";
+            if($status === true)
+                echo "<script>window.location = '?display=$_SESSION[display]&tab=$_SESSION[tab]&tabNum=$_GET[tabNum]';</script>";
+            else
+            {
+                echo "<script> alert(\"$status\"); window.location = '?display=$_SESSION[display]&tab=$_SESSION[tab]&tabNum=$_GET[tabNum]'; </script>";
+            }
         } else {
-
-            echo "<script>window.location='$_SESSION[return_url2]$_SESSION[anchor_tag]'</script>";
+            if($status === true)
+                echo "<script>window.location='$_SESSION[return_url2]$_SESSION[anchor_tag]';</script>";
+            else
+            {
+                echo "<script> alert(\"$status\"); window.location='$_SESSION[return_url2]$_SESSION[anchor_tag]'; </script>";
+            }
         }
     }
     // } else
