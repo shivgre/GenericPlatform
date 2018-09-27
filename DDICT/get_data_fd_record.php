@@ -2,6 +2,12 @@
 
 function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_status = 'false', $tab_num = 'false', $editable = 'true') {
 
+//    echo "<pre>";
+//    print_r($_REQUEST);
+//    print_r($_SESSION);
+//    die;
+    
+    
     $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
     $con = connect();
@@ -63,10 +69,9 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
 
             $qry = "SELECT * FROM field_dictionary INNER JOIN data_dictionary ON data_dictionary.`table_alias` = field_dictionary.`table_alias` where data_dictionary.table_alias = '$table_alias' and data_dictionary.display_page='$display_page' and tab_num='$tab_num'    order by field_dictionary.display_field_order";
-			$_SESSION['mydata'] = $table_alias." ".$display_page;
+            $_SESSION['mydata'] = $table_alias . " " . $display_page;
             $rs2 = $con->query("SELECT * FROM field_dictionary INNER JOIN data_dictionary ON data_dictionary.`table_alias` = field_dictionary.`table_alias` where data_dictionary.table_alias = '$table_alias' and data_dictionary.display_page='$display_page'  and tab_num='$tab_num'  order by field_dictionary.display_field_order");
-			 
-		} else {
+        } else {
             $rs = $con->query("SELECT * FROM field_dictionary INNER JOIN data_dictionary ON data_dictionary.`table_alias` = field_dictionary.`table_alias` where data_dictionary.table_alias = '$table_alias' and data_dictionary.display_page='$display_page' and tab_num='$_GET[tabNum]'  order by field_dictionary.display_field_order");
 
 
@@ -76,10 +81,12 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
         }
 
         $row1 = $rs->fetch_assoc();
-		$_SESSION['list_pagination'] = $row1['list_pagination'];
+        $_SESSION['list_pagination'] = $row1['list_pagination'];
         ///////// for displaying image container
         $image_display = 'true';
-//print_r($row1);die;
+        
+//        echo "<pre>";
+//        print_r($row1);die;
 
         /* profile-image
           if (trim($row1['table_type']) == 'profile-image') {
@@ -131,8 +138,6 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
                     $style = $row1['list_style'] . ' page_not_editable';
                 else
                     $style = 'page_not_editable';
-            
-                
             }else if ($row1['page_editable'] == 2) {
 
                 $page_editable = false;
@@ -290,9 +295,9 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
             /////generating session for capturing parent List tabname
 
-            if ($row1['table_type'] == 'parent'){
+            if ($row1['table_type'] == 'parent') {
                 $_SESSION['parent_list_tabname'] = $tab_name[0];
-            
+
                 $_SESSION['parent_url'] = $actual_link;
             }
             /*
@@ -321,9 +326,8 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
 
                 echo "<br><ol class='breadcrumb'>
-  <li><a href='$_SESSION[parent_url]&button=cancel' class='back-to-list'>Back To <span>$_SESSION[parent_list_tabname]</span> List</a></li>
-      
-</ol>";
+                            <li><a href='$_SESSION[parent_url]&button=cancel' class='back-to-list'>Back To <span>$_SESSION[parent_list_tabname]</span> List</a></li>
+                          </ol>";
             }
 
 
@@ -383,8 +387,10 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
                 else
                     $breadcrumb_display = " Back To <span>$_SESSION[list_tab_name]</span> Lists";
 
-                echo "<br><div class='breadcrumb'>
-  <a href='$link_to_return&button=cancel&table_type=$row1[table_type]" . ( $_GET['fnc'] == 'onepage' ? '&fnc=onepage' : '' ) . "' class='back-to-list'> $breadcrumb_display</a></div>";
+                echo "<br>
+                    <div class='breadcrumb'>
+                        <a href='$link_to_return&button=cancel&table_type=$row1[table_type]" . ( $_GET['fnc'] == 'onepage' ? '&fnc=onepage' : '' ) . "' class='back-to-list'> $breadcrumb_display</a>
+                    </div>";
 
 
 
@@ -444,16 +450,13 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
 
 
-                
-                 echo "<div class='form-footer'>  
-                                   
-                            
-                                <input type='submit'  value='" . formSave . "' class='btn btn-primary update-btn' />
-                                
- <a href='$actual_link' ><input type='button' name='profile_cancel' value='" . formCancel . "' class='btn btn-primary update-btn' /></a>
-                            </div>";
-                 
-                 echo "<div style='clear:both'></div><hr>";
+
+                echo "<div class='form-footer'>                            
+                        <input type='submit'  value='" . formSave . "' class='btn btn-primary update-btn' />
+                        <a href='$actual_link' ><input type='button' name='profile_cancel' value='" . formCancel . "' class='btn btn-primary update-btn' /></a>
+                    </div>";
+
+                echo "<div style='clear:both'></div><hr>";
 
                 while ($row = $rs2->fetch_assoc()) {
 
@@ -469,19 +472,12 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
                 // }
 
-                echo "<div class='form-footer'>  
-                                   
+                echo "<div class='form-footer'>                            
+                        <input type='submit'  value='" . formSave . "' class='btn btn-primary update-btn' />                                
+                        <a href='$actual_link' ><input type='button' name='profile_cancel' value='" . formCancel . "' class='btn btn-primary update-btn' /></a>
+                    </div>
                             
-                                <input type='submit'  value='" . formSave . "' class='btn btn-primary update-btn' />
-                                
- <a href='$actual_link' ><input type='button' name='profile_cancel' value='" . formCancel . "' class='btn btn-primary update-btn' /></a>
-                            </div>
-                           
-                                   
-                               
-                          
-                            
-                                </div>";
+                    <!--</div>-->";###COMMENTED OUT AS IT DOESN"T HAVE OPENING <DIV> TAG
 
 
                 echo "<div style='clear:both'></div></form>";
@@ -522,7 +518,7 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
                     }
 
 
-///// To show image uploader buttons
+                    ///// To show image uploader buttons
 
                     if ($_GET['checkFlag'] == 'true' && $row1['dd_editable'] == 11) {
 
@@ -564,11 +560,10 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
                             $breadcrumb_display = " Back To <span>$_SESSION[list_tab_name]</span> Lists";
 
                         echo "<div class='breadcrumb'>
-  <a href='$link_to_return&button=cancel&table_type=$row1[table_type]" . ( $_GET['fnc'] == 'onepage' ? '&fnc=onepage' : '' ) . "' class='back-to-list'> $breadcrumb_display</a>
-      
-      " . editPagePagination($row1['list_extra_options'], $primary_key) . "
-</div>";
-                    } 
+                                <a href='$link_to_return&button=cancel&table_type=$row1[table_type]" . ( $_GET['fnc'] == 'onepage' ? '&fnc=onepage' : '' ) . "' class='back-to-list'> $breadcrumb_display</a>      
+                                    " . editPagePagination($row1['list_extra_options'], $primary_key) . "
+                              </div>";
+                    }
 
                     /*
                      * ****
@@ -643,7 +638,7 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 //print_r($urow);die;
 
                     while ($row = $rs2->fetch_assoc()) {
-						//echo "<pre>"; print_r($row); 
+                        //echo "<pre>"; print_r($row); 
                         formating_Update($row, $method = 'edit', $urow, $image_display, $page_editable);
                     }//// end of while loop
                 } else {
@@ -666,19 +661,22 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
                         } else {
                             echo "<div class='$row1[list_style]'>$row1[description]</div>";
                         }
-                    } else { 
+                    } else {
+                        #echo ("INSIDE FD RECORD.PHP called list_display()<br> ");
+//                        echo "<pre>";
+//                        print_r($_SESSION); die;
                         list_display($qry, $row1['tab_num']); //// list displays
 
                         echo "<div style='clear:both'></div>";
                     }
 // }
                 }
-/// formating ends here  ///
+                /// formating ends here  ///
 
                 if ($editable == 'true') {
                     if (( $row1['list_views'] == 'NULL' || $row1['list_views'] == '' ) || ( isset($_GET['id'])) || $_GET['edit'] == 'true') {
                         // if (empty($_SESSION['profile-image'])) {
-///when edit form is not list
+                        ///when edit form is not list
                         //  $cancel_value = 'Cancel';
 
                         if ($row1['dd_editable'] == 11 && $row1['page_editable'] == 1) {
@@ -699,18 +697,9 @@ function Get_Data_FieldDictionary_Record($table_alias, $display_page, $tab_statu
 
                             //if( $row1['dd_editable'] != 0 ){
 
-                            echo "<div class='form-footer'>  
-                                   
-                           
-                                <input type='submit'  value='" . formUpdate . "' class='btn btn-primary update-btn' />
-                          
-                            
-                                
-                                    <a href='$actual_link' ><input type='button' name='profile_cancel' value='" . formCancel . "' class='btn btn-primary update-btn' /></a>
-                                
-                           
-                          
-                            
+                            echo "<div class='form-footer'>                           
+                                    <input type='submit'  value='" . formUpdate . "' class='btn btn-primary update-btn' />                                
+                                    <a href='$actual_link' ><input type='button' name='profile_cancel' value='" . formCancel . "' class='btn btn-primary update-btn' /></a> 
                                 </div>";
 
                             // }

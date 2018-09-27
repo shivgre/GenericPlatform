@@ -4,7 +4,7 @@
 //////////////***** DISPALY TABS AS H1 TAG ******
 
 function display_content($row) {
-
+    
     $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
     $editable = 'true';
