@@ -12,10 +12,11 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
     $con = connect();
 //how list will know on basis of which key to show the record///
 //$_SESSION['update_table']['keyfield'] = 'uid';
-
+//    echo ($qry);
     $rs = $con->query($qry);
     $row = $rs->fetch_assoc();
 //    echo "<pre>";
+//    var_dump($_REQUEST);
 //    print_r($row);
 //    print_r($_SESSION);
 //    echo "</pre>";
@@ -33,14 +34,36 @@ function list_display($qry, $tab_num = 'false', $tab_anchor = 'false') {
     $list_sort = explode(',', $row['list_sort']);
 //echo count($list_sort);die;
 
+    
+    ####SET SESSION VAR FOR HOLDING TABLE_TYPE='parent' data_dictionary.`keyfield` and its relevant value for that keyfield column if it exists in the table#########
+    $keyfield = $row['keyfield'];
+    #echo "<font color=green>\$keyfield:$keyfield :: row[keyfield] : {$row[$keyfield]}</font><br>";
+    if (strtolower(trim($row['table_type']) ) == 'parent' && !empty($keyfield) )
+    {
+        $_SESSION['parent_key_value'] = $keyfield;
+    }
+    else if ( strtolower(trim($row['table_type']) ) !== 'child')
+    {
+        unset($_SESSION['parent_key_value']);
+    }
+    
+//    echo "<pre>AFTER SESSION<br>";
+//    print_r($_SESSION);
+//    echo "</pre>";
+    
 
     ###if table_type="parent" OR table_type= $internal_table_types[0] OR table_type= $internal_table_types[1]
+    ###`$internal_table_types` array so `$internal_table_types[0]` == 'USER'` and  `$internal_table_types[1]` == 'PROJECT'`
     ###(adjusting for lower case)
     $tableTypeUppercase = strtoupper(trim($row['table_type']) );
-    if (strtolower(trim($row['table_type']) ) == 'child' || $tableTypeUppercase = $internal_table_types['0'] || $tableTypeUppercase = $internal_table_types['1'])
+    if (strtolower(trim($row['table_type']) ) == 'child')# || $tableTypeUppercase == $internal_table_types['0'] || $tableTypeUppercase == $internal_table_types['1']
     {
         $search_key = $_SESSION['update_table']['search'];
-        $row['list_filter'] = array('list_filter' => $row['list_filter'], 'child_filter' => "$row[database_table_name].$row[keyfield]=$search_key");
+        if(!empty($_REQUEST['search_id'])  && !empty($_SESSION['parent_key_value']) )
+        {
+            $search_key = $_REQUEST['search_id'];
+            $row['list_filter'] = array('list_filter' => $row['list_filter'], 'child_filter' => "$row[database_table_name].$row[keyfield]='$search_key'");
+        }
         //      if(empty($row['list_filter']) && $row['parent_table'] == 'product' )
         //	{
         //            $row['list_filter'] = "projects=$row[keyfield]";#'projects=DD.keyfield' from the child dict_id
